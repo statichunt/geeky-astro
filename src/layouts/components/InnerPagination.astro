@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const currentPostIndex = posts.findIndex(
+  (post) => post.slug === Astro.params.single,
+);
+const lastIndex = posts.length - 1;
+const next =
+  currentPostIndex == 0 ? undefined : posts[currentPostIndex - 1].slug;
+const prev =
+  currentPostIndex == lastIndex ? undefined : posts[currentPostIndex + 1].slug;
+---
+
+<div class="row">
+  <span class="col">
+    {
+      prev && (
+        <a href={prev} class={"btn btn-primary"}>
+          Prev
+        </a>
+      )
+    }
+  </span>
+  <span class="col-8"></span>
+  <span class="col">
+    {
+      next && (
+        <a href={next} class={"btn btn-primary"}>
+          Next
+        </a>
+      )
+    }
+  </span>
+</div>

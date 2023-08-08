@@ -1,0 +1,132 @@
+---
+import InnerPagination from "@/components/InnerPagination.astro";
+import Post from "@/components/post.astro";
+import { disqus, metadata, settings } from "@/config/config.json";
+import Disqus from "@/helpers/Disqus";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import Base from "@/layouts/Base.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import dateFormat from "@/lib/utils/dateFormat";
+import similerItems from "@/lib/utils/similarItems";
+import { markdownify } from "@/lib/utils/textConverter";
+import Sidebar from "@/partials/Sidebar.astro";
+import { Image } from "@astrojs/image/components";
+import { CollectionEntry, getCollection } from "astro:content";
+const { post_folder, InnerPaginationOptions } = settings;
+
+type Props = CollectionEntry<"posts">;
+
+export async function getStaticPaths() {
+  const posts = await getCollection(
+    "posts",
+    ({ data, id }) => !id.startsWith("-") && !data.draft,
+  );
+
+  const paths = posts.map((post) => ({
+    params: {
+      single: post.slug,
+    },
+    props: { ...post },
+  }));
+
+  return paths;
+}
+
+const { data, render, slug } = Astro.props;
+const { title, image, author, date } = data;
+const { Content } = await render();
+const categories = await getTaxonomy(post_folder, "categories");
+const postEntries = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const relatedPosts = similerItems(Astro.props, postEntries, slug);
+---
+
+<Base {...data}>
+  <section class="section single-blog mt-6">
+    <div class="container">
+      <div class="row">
+        <div class="lg:col-8">
+          <article>
+            <div class="relative">
+              {
+                image && (
+                  <Image
+                    src={image}
+                    height={500}
+                    width={1000}
+                    alt={title}
+                    class="rounded-lg"
+                  />
+                )
+              }
+              <ul class="absolute top-3 left-2 flex flex-wrap items-center">
+                {
+                  categories.map((tag, index) => (
+                    <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
+                      <a
+                        class="capitalize"
+                        href={`/categories/${tag.replace(" ", "-")}`}
+                      >
+                        {tag}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+            {
+              InnerPaginationOptions.enableTop && (
+                <div class="mt-4">
+                  <InnerPagination />
+                </div>
+              )
+            }
+
+            <h1 class="lg:text-[42px] mt-4" set:text={markdownify(title)} />
+            <ul class="flex items-center space-x-4">
+              <li>
+                <a
+                  class="inline-flex items-center font-secondary text-xs leading-3"
+                  href="/about"
+                >
+                  <DynamicIcon className="mr-1.5" icon="FaUser" />
+                  {author ?? metadata.meta_author}
+                </a>
+              </li>
+              <li
+                class="inline-flex items-center font-secondary text-xs leading-3"
+              >
+                <DynamicIcon icon="FaRegCalendar" className="mr-1.5" />
+                {dateFormat(date!)}
+              </li>
+            </ul>
+            <div class="content mb-16">
+              <Content />
+            </div>
+            {InnerPaginationOptions.enableBottom && <InnerPagination />}
+          </article>
+          <div class="mt-16">
+            {disqus.enable && <Disqus client:load />}
+          </div>
+        </div>
+        <Sidebar posts={postEntries.filter((post) => post.slug !== slug)} />
+      </div>
+    </div>
+
+    {/* Related posts */}
+    <div class="container mt-20">
+      <h2 class="section-title">Related Posts</h2>
+      <div class="row mt-16">
+        {
+          relatedPosts.slice(0, 3).map((post, index) => (
+            <div class="mb-12 lg:col-4">
+              <Post {...post} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>

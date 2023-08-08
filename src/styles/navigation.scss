@@ -1,0 +1,127 @@
+body.menu-open {
+  @apply overflow-hidden pr-0;
+}
+
+// navbar toggler
+input#nav-toggle:checked + div #show-button {
+  @apply hidden;
+}
+
+input#nav-toggle:checked + div #hide-button {
+  @apply block;
+}
+
+input#nav-toggle:checked + div .navbar-nav {
+  @apply translate-x-0;
+}
+
+input#nav-toggle:checked + div .backdrop {
+  @apply opacity-100 visible;
+}
+
+.header {
+  @apply top-0 z-50 border-b bg-body py-[33px] dark:border-darkmode-border dark:bg-darkmode-body;
+}
+
+.backdrop {
+  @apply bg-black/20 opacity-0 invisible fixed top-0 left-0 h-full w-full lg:hidden z-20 transition;
+}
+
+// navbar items
+.navbar {
+  @apply flex flex-wrap items-center justify-between;
+}
+
+.navbar-brand {
+  @apply text-xl font-semibold text-dark;
+  image {
+    @apply max-h-full max-w-full;
+  }
+}
+
+.navbar-nav {
+  @apply mt-0 order-3 p-7 lg:p-0 absolute top-0 right-0 h-screen bg-body  lg:h-auto lg:bg-transparent lg:static max-w-md lg:max-w-none w-full pb-6 lg:order-0 lg:flex lg:w-auto lg:space-x-2 lg:pb-0 xl:space-x-8 translate-x-full lg:translate-x-0 z-50 transition-all duration-300 dark:max-lg:bg-darkmode-body;
+}
+
+.nav-item {
+  @apply mb-5 text-left lg:mb-0;
+
+  &.active {
+    @apply bg-primary text-white;
+  }
+}
+
+.nav-link {
+  @apply rounded-[30px] px-6 py-2.5 text-left font-secondary text-[13.5px] capitalize  text-dark transition hover:bg-primary hover:text-white dark:text-darkmode-light md:px-3 md:py-3 lg:text-center xl:px-5;
+
+  &.active {
+    @apply bg-primary text-white;
+  }
+}
+
+.nav-dropdown {
+  @apply mr-0;
+}
+
+.nav-dropdown-list {
+  @apply z-10 rounded-lg  border border-transparent bg-body p-4 shadow dark:border-darkmode-border dark:bg-black;
+}
+
+.nav-dropdown-item {
+  @apply mb-1.5;
+}
+
+.nav-dropdown-link {
+  @apply min-w-[150px] rounded py-2.5 px-3.5 text-base font-semibold  text-dark transition hover:bg-primary/10 hover:text-primary dark:text-darkmode-light;
+
+  &.active {
+    @apply bg-primary/10 text-primary;
+  }
+}
+
+// search style
+.search-icon {
+  @apply inline-block h-10 w-10 cursor-pointer rounded-full bg-primary p-2.5 text-xl text-white;
+}
+.search-modal {
+  @apply z-50 invisible opacity-100 absolute top-0 left-0 right-0  bg-body  transition dark:bg-black h-full;
+  .form-input {
+    @apply h-full w-full border-0 px-4 text-lg;
+  }
+  .search-close {
+    @apply absolute top-1/2 right-2 -translate-y-1/2 p-3 text-h4;
+  }
+  &.open {
+    @apply visible opacity-100;
+  }
+}
+
+.light .menu-open {
+  .border-border,
+  &.border-border {
+    @apply border-darkmode-border;
+  }
+}
+
+//theme-switcher
+.theme-switcher {
+  @apply inline-flex;
+
+  label {
+    @apply relative inline-block h-4 w-6 cursor-pointer rounded-2xl bg-border lg:w-10;
+  }
+
+  input {
+    @apply absolute opacity-0;
+  }
+
+  span {
+    @apply absolute -top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-dark transition-all duration-300 dark:bg-white;
+  }
+
+  input:checked + label {
+    span {
+      @apply lg:left-4;
+    }
+  }
+}

@@ -1,0 +1,57 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import Post from "@/components/post.astro";
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { markdownify } from "@/lib/utils/textConverter";
+import { CollectionEntry, getCollection, getEntry } from "astro:content";
+const { pagination } = config.settings;
+
+export async function getStaticPaths() {
+  const { pagination } = config.settings;
+  const posts = await getCollection(
+    "posts",
+    ({ data, id }) => !id.startsWith("-") && !data.draft,
+  );
+
+  const totalPages = Math.ceil(posts.length / pagination);
+  const paths = [...Array(totalPages).keys()].map((i) => ({
+    params: {
+      slug: (i + 1).toString(),
+    },
+  }));
+
+  return paths;
+}
+const { slug } = Astro.params;
+const { data } = await getEntry("posts", "-index");
+const post = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const sortedPosts: CollectionEntry<"posts">[] = sortByDate(post);
+const currentPage = slug && !isNaN(Number(slug)) ? Number(slug) : 1;
+const indexOfLastPost = currentPage * config.settings.pagination;
+const indexOfFirstPost = indexOfLastPost - config.settings.pagination;
+const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+const totalPages = Math.ceil(sortedPosts.length / pagination);
+---
+
+<Base>
+  <section class="section">
+    <div class="container">
+      <h1 class="h2 mb-8 text-center" set:html={markdownify(data.title)} />
+      <div class="row mb-16">
+        {
+          currentPosts.map((post, i) => (
+            <div class="mt-16 lg:col-6">
+              <Post {...post} />
+            </div>
+          ))
+        }
+      </div>
+      <Pagination totalPages={totalPages} currentPage={currentPage} />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,51 @@
+---
+import Logo from "@/components/Logo.astro";
+import Social from "@/components/Social.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import social from "@/config/social.json";
+import { markdownify } from "@/lib/utils/textConverter";
+
+const { footer }: { footer: { name: string; url: string }[] } = menu;
+const { copyright, footer_content } = config.params;
+---
+
+<footer class="section relative mt-12 pt-[70px] pb-[50px]">
+  <img
+    width={1905}
+    height={443}
+    class="-z-[1] object-cover object-left md:object-top absolute inset-0"
+    src="/images/footer-bg-shape.svg"
+    alt="footer background"
+  />
+  <div class="container text-center">
+    <div class="mb-6 inline-flex">
+      <Logo />
+    </div>
+
+    <p class="max-w-[638px] mx-auto" set:html={markdownify(footer_content)} />
+
+    {/* footer menu */}
+    <ul class="mb-12 mt-6 flex-wrap space-x-2 lg:space-x-4">
+      {
+        footer.map((menu) => (
+          <li class="inline-block">
+            <a
+              href={menu.url}
+              class="p-2 font-bold text-dark hover:text-primary dark:text-darkmode-light lg:p-4"
+            >
+              {menu.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    {/* social icons */}
+    <div class="inline-flex">
+      <Social source={social.main} className="socials mb-12 justify-center" />
+    </div>
+    {/* copyright */}
+
+    <p set:html={markdownify(copyright)} />
+  </div>
+</footer>

@@ -1,0 +1,184 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import Post from "@/components/post.astro";
+import { settings } from "@/config/config.json";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import Base from "@/layouts/Base.astro";
+import dateFormat from "@/lib/utils/dateFormat";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { markdownify } from "@/lib/utils/textConverter";
+import Sidebar from "@/partials/Sidebar.astro";
+import type { HomePage } from "@/types";
+import { Image } from "@astrojs/image/components";
+import { CollectionEntry, getCollection, getEntry } from "astro:content";
+const { post_folder, pagination } = settings;
+
+const homepage = await getEntry("homepage", "-index");
+const { banner, featured_posts, promotion, recent_posts } =
+  homepage.data as HomePage;
+const posts = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const sortedPost: CollectionEntry<"posts">[] = sortByDate(posts);
+const featuredPosts = posts.filter((post) => post.data.featured);
+---
+
+<Base>
+  {/* Banner */}
+  <section class="section banner relative pb-0">
+    <Image
+      class="absolute bottom-0 left-0 z-[-1] w-full"
+      src={"/images/banner-bg-shape.svg"}
+      width={1905}
+      height={295}
+      alt="banner-shape"
+    />
+
+    <div class="container">
+      <div
+        class="row flex-wrap-reverse items-center justify-center lg:flex-row"
+      >
+        <div
+          class={banner.image_enable
+            ? "mt-12 text-center lg:mt-0 lg:text-left lg:col-6"
+            : "mt-12 text-center lg:mt-0 lg:text-left lg:col-12"}
+        >
+          <div class="banner-title">
+            <h1 set:html={markdownify(banner.title)} />
+            <span set:html={markdownify(banner.title_small)} />
+          </div>
+          <p class="mt-4" set:html={markdownify(banner.content)} />
+          {
+            banner.button.enable && (
+              <a class="btn btn-primary mt-6" href={banner.button.link}>
+                {banner.button.label}
+              </a>
+            )
+          }
+        </div>
+        {
+          banner.image_enable && (
+            <div class="col-9 lg:col-6">
+              <Image
+                class="mx-auto object-contain"
+                src={banner.image}
+                width={548}
+                height={443}
+                alt="Banner Image"
+              />
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* Home main */}
+  <section class="section">
+    <div class="container">
+      <div class="row items-start">
+        <div class="mb-12 lg:mb-0 lg:col-8">
+          {/* Featured posts */}
+          {
+            featured_posts.enable && (
+              <div class="section">
+                <h2
+                  class="section-title"
+                  set:html={markdownify(featured_posts.title)}
+                />
+                <div class="rounded border border-border p-6 dark:border-darkmode-border">
+                  <div class="row">
+                    <div class="md:col-6">
+                      <Post {...featuredPosts[0]} />
+                    </div>
+                    <div class="scrollbar-w-[10px] mt-8 max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-darkmode-theme-dark overflow-y-auto md:mt-0 md:col-6">
+                      {featuredPosts
+                        .slice(1, featuredPosts.length)
+                        .map((post) => {
+                          const { image, title, date } = post.data;
+                          return (
+                            <div class={`mb-6 flex items-center pb-6`}>
+                              {image && (
+                                <Image
+                                  class="mr-3 h-[85px] rounded object-cover"
+                                  src={image}
+                                  alt={title}
+                                  width={105}
+                                  height={85}
+                                />
+                              )}
+                              <div>
+                                <h3 class="h5 mb-2">
+                                  <a
+                                    href={`/${post_folder}/${post.slug}`}
+                                    class="block hover:text-primary"
+                                  >
+                                    {title}
+                                  </a>
+                                </h3>
+                                <p class="inline-flex items-center font-bold">
+                                  <DynamicIcon
+                                    className="mr-1.5"
+                                    icon="FaRegCalendar"
+                                  />
+                                  {dateFormat(date!)}
+                                </p>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
+          {/* Promotion */}
+
+          {
+            promotion.enable && (
+              <a href={promotion.link} class="section block pt-0">
+                <Image
+                  class="h-full w-full"
+                  height={115}
+                  width={800}
+                  src={promotion.image}
+                  alt="promotion"
+                />
+              </a>
+            )
+          }
+
+          {/* Recent Posts */}
+          {
+            recent_posts.enable && (
+              <div class="section pt-0">
+                <h2
+                  class="section-title"
+                  set:html={markdownify(recent_posts.title)}
+                />
+                <div class="rounded border border-border px-6 pt-6 dark:border-darkmode-border">
+                  <div class="row">
+                    {sortedPost.slice(0, pagination).map((post) => (
+                      <div class="mb-8 md:col-6">
+                        <Post {...post} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
+          <Pagination
+            totalPages={Math.ceil(posts.length / pagination)}
+            currentPage={1}
+          />
+        </div>
+        <Sidebar posts={posts} />
+      </div>
+    </div>
+  </section>
+</Base>

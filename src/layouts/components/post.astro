@@ -1,0 +1,66 @@
+---
+import { metadata, settings } from "@/config/config.json";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import dateFormat from "@/lib/utils/dateFormat";
+import { markdownify, slugify } from "@/lib/utils/textConverter";
+import { Image } from "@astrojs/image/components";
+import type { CollectionEntry } from "astro:content";
+const { post_folder } = settings;
+const { summary_length } = settings;
+
+type Props = CollectionEntry<"posts">;
+const { image, title, date, author, categories } = Astro.props.data;
+const { body, slug } = Astro.props;
+---
+
+<div class="post">
+  <div class="relative">
+    {
+      image && (
+        <Image
+          class="rounded"
+          src={image}
+          alt={title}
+          width={405}
+          height={208}
+        />
+      )
+    }
+
+    <ul class="absolute top-3 left-2 flex flex-wrap items-center">
+      {
+        categories?.map((tag, index) => (
+          <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
+            <a class="capitalize" href={`/categories/${slugify(tag)}`}>
+              {tag}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  <h3 class="h5 mb-2 mt-4">
+    <a href={`/${post_folder}/${slug}`} class="block hover:text-primary">
+      {title}
+    </a>
+  </h3>
+  <ul class="flex items-center space-x-4">
+    <li>
+      <a
+        class="inline-flex items-center font-secondary text-xs leading-3"
+        href="/about"
+      >
+        <DynamicIcon className="mr-1.5" icon="FaUser" />
+        {author ?? metadata.meta_author}
+      </a>
+    </li>
+    <li class="inline-flex items-center font-secondary text-xs leading-3">
+      <DynamicIcon className="mr-1.5" icon="FaRegCalendar" />
+      {dateFormat(date!)}
+    </li>
+  </ul>
+  <p set:html={markdownify(body.slice(0, summary_length))} />
+  <a class="btn btn-outline-primary mt-4" href={`/${post_folder}/${slug}`}>
+    Read More
+  </a>
+</div>

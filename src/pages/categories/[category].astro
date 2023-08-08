@@ -1,0 +1,60 @@
+---
+import Post from "@/components/post.astro";
+import { settings } from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import taxonomyFilter from "@/lib/utils/taxonomyFilter";
+import { slugify } from "@/lib/utils/textConverter";
+import Sidebar from "@/partials/Sidebar.astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const categories = await getTaxonomy(settings.post_folder, "categories");
+  return categories.map((category) => {
+    return {
+      params: { category },
+    };
+  });
+}
+
+const { category } = Astro.params;
+const posts = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
+  posts,
+  "categories",
+  category!,
+);
+---
+
+<Base title={category}>
+  <div class="section mt-16">
+    <div class="container">
+      <h1 class="h2 mb-12">
+        Showing posts from
+        <span class="section-title ml-1 inline-block capitalize">
+          {slugify(category!)}
+        </span>
+      </h1>
+      <div class="row">
+        <div class="lg:col-8">
+          <div
+            class="row rounded border border-border p-4 px-3 dark:border-darkmode-border lg:p-6"
+          >
+            {
+              filterByCategories.map((post, i) => (
+                <div class="col-12 mb-8 sm:col-6">
+                  <Post {...post} />
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <Sidebar posts={posts} />
+      </div>
+    </div>
+  </div>
+</Base>

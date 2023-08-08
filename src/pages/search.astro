@@ -1,0 +1,25 @@
+---
+import config from "@/config/config.json";
+import Base from "@/layouts/Base.astro";
+import SearchList from "@/layouts/Search";
+import { getCollection } from "astro:content";
+
+const { post_folder } = config.settings;
+
+// Retrieve all articles
+const posts = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+
+// List of items to search in
+const searchList = posts.map((item) => ({
+  slug: item.slug,
+  data: item.data,
+  content: item.body,
+}));
+---
+
+<Base title={`Search`}>
+  <SearchList client:load searchList={searchList} />
+</Base>

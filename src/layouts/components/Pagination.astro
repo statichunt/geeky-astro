@@ -1,0 +1,84 @@
+---
+import DynamicIcon from "@/helpers/DynamicIcon";
+type Pagination = {
+  section?: string;
+  currentPage?: number;
+  totalPages?: number;
+};
+
+const { section, currentPage = 1, totalPages = 1 }: Pagination = Astro.props;
+
+const indexPageLink = currentPage === 2;
+const hasPrevPage = currentPage > 1;
+const hasNextPage = totalPages > currentPage;
+const pageList = [...Array(totalPages).keys()].map((i) => i + 1);
+---
+
+{
+  totalPages > 1 && (
+    <nav
+      class="item-center mb-4 flex justify-center space-x-1 lg:space-x-2"
+      aria-label="Pagination"
+    >
+      {/* previous */}
+      {hasPrevPage ? (
+        <a
+          href={
+            indexPageLink
+              ? `${section ? "/" + section : "/"}`
+              : `${section ? "/" + section : ""}/page/${currentPage - 1}`
+          }
+          class="flex items-center rounded-full px-2 py-1 text-3xl font-bold leading-none text-dark dark:text-darkmode-light"
+        >
+          <DynamicIcon icon="FaArrowLeft" />
+          <span class="ml-3 text-lg ">Previous</span>
+        </a>
+      ) : (
+        <span class="flex items-center rounded-full px-2 py-1 text-3xl font-bold text-dark dark:text-darkmode-light ">
+          <DynamicIcon icon="FaArrowLeft" />
+          <span class="ml-3 text-lg">Previous</span>
+        </span>
+      )}
+
+      {/* page index */}
+      {pageList.map((pagination, i) =>
+        pagination === currentPage ? (
+          <span
+            aria-current="page"
+            class={`inline-flex h-[38px] w-[38px] items-center justify-center rounded-full bg-primary px-4 py-1 font-secondary text-lg font-bold leading-none text-white dark:text-darkmode-light`}
+          >
+            {pagination}
+          </span>
+        ) : (
+          <a
+            href={
+              i === 0
+                ? `${section ? "/" + section : "/"}`
+                : `${section ? "/" + section : ""}/page/${pagination}`
+            }
+            aria-current="page"
+            class={`inline-flex h-[38px] w-[38px] items-center justify-center rounded-full px-4 py-1 font-secondary text-lg font-bold leading-none text-dark dark:text-darkmode-light`}
+          >
+            {pagination}
+          </a>
+        ),
+      )}
+
+      {/* next page */}
+      {hasNextPage ? (
+        <a
+          href={`${section ? "/" + section : ""}/page/${currentPage + 1}`}
+          class="ml-4 flex items-center rounded-full px-2 py-1 text-3xl font-bold leading-none text-dark dark:text-darkmode-light"
+        >
+          <span class="mr-3 text-lg">Next</span>
+          <DynamicIcon icon="FaArrowRight" />
+        </a>
+      ) : (
+        <span class="ml-4 flex items-center rounded-full px-2 py-1 text-3xl font-bold text-dark dark:text-darkmode-light">
+          <span class="mr-3 text-lg">Next</span>
+          <DynamicIcon icon="FaArrowRight" />
+        </span>
+      )}
+    </nav>
+  )
+}

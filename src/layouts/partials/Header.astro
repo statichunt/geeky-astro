@@ -1,0 +1,166 @@
+---
+import Logo from "@/components/Logo.astro";
+import Social from "@/components/Social.astro";
+import ThemeSwitcher from "@/components/ThemeSwitcher.astro";
+import config from "@/config/config.json";
+import menu from "@/config/menu.json";
+import { IoSearch } from "react-icons/io5/index.js";
+import social from "@/config/social.json";
+
+export interface ChildNavigationLink {
+  name: string;
+  url: string;
+}
+
+export interface NavigationLink {
+  name: string;
+  url: string;
+  hasChildren?: boolean;
+  children?: ChildNavigationLink[];
+}
+
+const { main }: { main: NavigationLink[] } = menu;
+const { settings } = config;
+const { pathname } = Astro.url;
+---
+
+<header
+  class={`header relative z-30 ${settings.sticky_header && "sticky top-0"}`}
+>
+  <nav class="navbar container px-1 sm:px-8">
+    <!-- logo -->
+    <div class="order-0">
+      <Logo />
+    </div>
+    <!-- navbar toggler -->
+    <input id="nav-toggle" type="checkbox" class="hidden" />
+
+    <!-- /navbar toggler -->
+    <div class="flex items-center space-x-4 xl:space-x-8">
+      <div class="backdrop"></div>
+      <ul id="nav-menu" class="navbar-nav">
+        <li class="nav-item nav-dropdown group relative lg:hidden">
+          <label for="nav-toggle" class="text-right block">
+            <svg
+              class="h-5 fill-current inline-block cursor-pointer"
+              viewBox="0 0 20 20"
+            >
+              <title>Menu Close</title>
+              <polygon
+                points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+                transform="rotate(45 10 10)"></polygon>
+            </svg>
+          </label>
+        </li>
+        {
+          main.map((menu) => (
+            <>
+              {menu.hasChildren ? (
+                <li class="nav-item nav-dropdown group relative">
+                  <span
+                    class={`nav-link inline-flex items-center ${
+                      menu.children?.map(({ url }) => url).includes(pathname) ||
+                      menu.children
+                        ?.map(({ url }) => `${url}/`)
+                        .includes(pathname)
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    {menu.name}
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
+                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                  </span>
+                  <ul class="nav-dropdown-list hidden transition-all duration-300 group-hover:top-[46px] group-hover:lg:block md:invisible md:absolute md:top-[60px] md:block md:opacity-0 md:group-hover:visible md:group-hover:opacity-100">
+                    {menu.children?.map((child) => (
+                      <li class="nav-dropdown-item">
+                        <a
+                          href={child.url}
+                          class={`nav-dropdown-link block ${
+                            (pathname === `${child.url}/` ||
+                              pathname === child.url) &&
+                            "active"
+                          }`}
+                        >
+                          {child.name}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li class="nav-item">
+                  <a
+                    href={menu.url}
+                    class={`nav-link block ${
+                      (pathname === `${menu.url}/` || pathname === menu.url) &&
+                      "active"
+                    }`}
+                  >
+                    {menu.name}
+                  </a>
+                </li>
+              )}
+            </>
+          ))
+        }
+        <li class="lg:hidden">
+          <Social source={social.main} className="socials block" />
+        </li>
+      </ul>
+      <Social source={social.main} className="socials hidden lg:flex" />
+      <div class="order-1 ml-auto flex items-center md:order-2 lg:ml-0">
+        <ThemeSwitcher className="mr-3" />
+        {
+          settings.search && (
+            <a
+              href="/search"
+              class="search-button inline-flex text-xl text-theme-light dark:border-darkmode-border dark:text-white w-10 h-10 bg-primary rounded-full items-center justify-center ml-4"
+              aria-label="search"
+            >
+              <IoSearch />
+            </a>
+          )
+        }
+
+        <label
+          for="nav-toggle"
+          class="order-3 w-10 h-10 cursor-pointer flex items-center lg:hidden dark:text-white lg:order-1 justify-center bg-primary rounded-full text-theme-light ml-4"
+        >
+          <svg
+            id="show-button"
+            class="h-5 fill-current block"
+            viewBox="0 0 20 20"
+          >
+            <title>Menu Open</title>
+            <path d="M0 3h20v2H0V3z m0 6h20v2H0V9z m0 6h20v2H0V0z"></path>
+          </svg>
+          <svg
+            id="hide-button"
+            class="h-5 fill-current hidden"
+            viewBox="0 0 20 20"
+          >
+            <title>Menu Close</title>
+            <polygon
+              points="11 9 22 9 22 11 11 11 11 22 9 22 9 11 -2 11 -2 9 9 9 9 -2 11 -2"
+              transform="rotate(45 10 10)"></polygon>
+          </svg>
+        </label>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const navlink: NodeListOf<HTMLSpanElement> = document.querySelectorAll(
+    ".nav-dropdown > span",
+  );
+
+  navlink.forEach((link) => {
+    link.addEventListener("click", function () {
+      const nextElement = this.nextElementSibling;
+      nextElement?.classList.toggle("hidden");
+    });
+  });
+</script>

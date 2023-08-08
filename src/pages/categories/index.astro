@@ -1,0 +1,51 @@
+---
+import config from "@/config/config.json";
+import DynamicIcon from "@/helpers/DynamicIcon";
+import Base from "@/layouts/Base.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { humanize, markdownify } from "@/lib/utils/textConverter";
+import { getCollection } from "astro:content";
+
+const { post_folder } = config.settings;
+const posts = await getCollection(
+  "posts",
+  ({ data, id }) => !id.startsWith("-") && !data.draft,
+);
+const categories = await getTaxonomy(post_folder, "categories");
+const categoriesWithPostsCount = categories.map((category) => {
+  const filteredPosts = posts.filter((post) =>
+    post.data.categories?.includes(category),
+  );
+  return {
+    name: category,
+    posts: filteredPosts.length,
+  };
+});
+---
+
+<Base title={"Categories"}>
+  <section class="section pt-0">
+    <h1
+      class="h2 mb-16 bg-theme-light dark:bg-darkmode-theme-dark py-12 text-center lg:text-[55px]"
+      set:html={markdownify("")}
+    />
+
+    <div class="container pt-12 text-center">
+      <ul class="row">
+        {
+          categoriesWithPostsCount.map((category, i) => (
+            <li class="mt-4 block lg:col-4 xl:col-3">
+              <a
+                href={`/categories/${category.name}`}
+                class="flex w-full items-center justify-center rounded-lg bg-theme-light px-4 py-4 font-bold text-dark transition hover:bg-primary hover:text-white  dark:bg-darkmode-theme-dark dark:text-darkmode-light dark:hover:bg-primary dark:hover:text-white"
+              >
+                <DynamicIcon icon="FaFolder" className="mr-1.5" />
+                {humanize(category.name)} ({category.posts})
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
