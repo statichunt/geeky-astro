@@ -60,7 +60,13 @@ const { body, slug } = Astro.props;
     </li>
   </ul>
   <p set:html={markdownify(body.slice(0, summary_length))} />
-  <a class="btn btn-outline-primary mt-4" href={`/${post_folder}/${slug}`}>
-    Read More
+  <a
+    title={title}
+    aria-label={title}
+    class="btn btn-outline-primary mt-4"
+    href={`/${post_folder}/${slug}`}
+  >
+    <span class="sr-only">{title}</span>
+     Read More
   </a>
 </div>
