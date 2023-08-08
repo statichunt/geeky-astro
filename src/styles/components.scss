@@ -117,7 +117,7 @@
       @apply relative text-2xl text-black;
       &::after,
       &::before {
-        @apply absolute inline-block h-5 w-5 bg-[url('/images/quote.svg')] bg-[length:20px_20px] bg-no-repeat content-[''] lg:h-8 lg:w-8 lg:bg-[length:32px_32px];
+        @apply absolute inline-block h-5 w-5 bg-[url('/images/quote.png')] bg-[length:20px_20px] bg-no-repeat content-[''] lg:h-8 lg:w-8 lg:bg-[length:32px_32px];
       }
 
       &::before {
@@ -251,7 +251,7 @@ footer .socials {
       @apply relative text-2xl text-black;
       &::after,
       &::before {
-        @apply absolute inline-block h-8 w-8 bg-[url('/images/quote.svg')] bg-[length:32px_32px] bg-no-repeat content-[''];
+        @apply absolute inline-block h-8 w-8 bg-[url('/images/quote.png')] bg-[length:32px_32px] bg-no-repeat content-[''];
       }
 
       &::before {
