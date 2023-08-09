@@ -41,14 +41,14 @@ const { body, slug } = Astro.props;
     </ul>
   </div>
   <h3 class="h5 mb-2 mt-4">
-    <a href={`/${post_folder}/${slug}`} class="block hover:text-primary">
+    <a href={`/${post_folder}/${slug}`} class="block py-0.5 hover:text-primary">
       {title}
     </a>
   </h3>
   <ul class="flex items-center space-x-4">
     <li>
       <a
-        class="inline-flex items-center font-secondary text-xs leading-3"
+        class="inline-flex items-center font-secondary text-xs leading-3 p-0.5"
         href="/about"
       >
         <DynamicIcon className="mr-1.5" icon="FaUser" />
