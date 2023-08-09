@@ -32,7 +32,11 @@ const { body, slug } = Astro.props;
       {
         categories?.map((tag, index) => (
           <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
-            <a class="capitalize" href={`/categories/${slugify(tag)}`}>
+            <a
+              aria-label="categories"
+              class="capitalize"
+              href={`/categories/${slugify(tag)}`}
+            >
               {tag}
             </a>
           </li>
