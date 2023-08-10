@@ -58,6 +58,7 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
                     width={1000}
                     alt={title}
                     class="rounded-lg"
+                    format="webp"
                   />
                 )
               }
@@ -66,6 +67,7 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
                   categories.map((tag, index) => (
                     <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
                       <a
+                        aria-label="categories"
                         class="capitalize"
                         href={`/categories/${tag.replace(" ", "-")}`}
                       >

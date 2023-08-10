@@ -23,6 +23,7 @@ const { body, slug } = Astro.props;
           alt={title}
           width={405}
           height={208}
+          format="webp"
         />
       )
     }
@@ -31,7 +32,11 @@ const { body, slug } = Astro.props;
       {
         categories?.map((tag, index) => (
           <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
-            <a class="capitalize" href={`/categories/${slugify(tag)}`}>
+            <a
+              aria-label="categories"
+              class="capitalize"
+              href={`/categories/${slugify(tag)}`}
+            >
               {tag}
             </a>
           </li>
@@ -40,14 +45,14 @@ const { body, slug } = Astro.props;
     </ul>
   </div>
   <h3 class="h5 mb-2 mt-4">
-    <a href={`/${post_folder}/${slug}`} class="block hover:text-primary">
+    <a href={`/${post_folder}/${slug}`} class="block py-0.5 hover:text-primary">
       {title}
     </a>
   </h3>
   <ul class="flex items-center space-x-4">
     <li>
       <a
-        class="inline-flex items-center font-secondary text-xs leading-3"
+        class="inline-flex items-center font-secondary text-xs leading-3 p-0.5"
         href="/about"
       >
         <DynamicIcon className="mr-1.5" icon="FaUser" />
@@ -60,7 +65,13 @@ const { body, slug } = Astro.props;
     </li>
   </ul>
   <p set:html={markdownify(body.slice(0, summary_length))} />
-  <a class="btn btn-outline-primary mt-4" href={`/${post_folder}/${slug}`}>
-    Read More
+  <a
+    title={title}
+    aria-label={title}
+    class="btn btn-outline-primary mt-4"
+    href={`/${post_folder}/${slug}`}
+  >
+    <span class="sr-only">{title}</span>
+     Read More
   </a>
 </div>

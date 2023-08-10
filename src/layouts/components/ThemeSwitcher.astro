@@ -11,7 +11,7 @@ const { className }: { className?: string } = Astro.props;
 {
   theme_switcher && (
     <div class={`theme-switcher ${className}`}>
-      <button data-theme-switcher>
+      <button aria-label="theme-switch" type="button" data-theme-switcher>
         <svg
           class="transition rotate-[130deg]"
           xmlns="http://www.w3.org/2000/svg"

@@ -32,6 +32,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
       src={"/images/banner-bg-shape.png"}
       width={1905}
       height={295}
+      format="webp"
       alt="banner-shape"
     />
 
@@ -51,7 +52,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
           <p class="mt-4" set:html={markdownify(banner.content)} />
           {
             banner.button.enable && (
-              <a class="btn btn-primary mt-6" href={banner.button.link}>
+              <a class="btn btn-primary lg:mb-0 my-6" href={banner.button.link}>
                 {banner.button.label}
               </a>
             )
@@ -65,6 +66,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                 src={banner.image}
                 width={548}
                 height={443}
+                format="webp"
                 alt="Banner Image"
               />
             </div>
@@ -106,6 +108,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                                   alt={title}
                                   width={105}
                                   height={85}
+                                  format="webp"
                                 />
                               )}
                               <div>
@@ -146,6 +149,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                   width={800}
                   src={promotion.image}
                   alt="promotion"
+                  format="webp"
                 />
               </a>
             )
