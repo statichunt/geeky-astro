@@ -13,11 +13,12 @@ import type { CollectionEntry } from "astro:content";
 
 type Props = {
   posts: CollectionEntry<"posts">[];
+  className?: string
 };
 
 const { post_folder } = settings;
 const { about, categories, featured_posts, newsletter } = widgets;
-const { posts } = Astro.props;
+const { posts, className } = Astro.props;
 const catagories = await getTaxonomy("posts", "categories");
 const featuredPosts: CollectionEntry<"posts">[] = sortByDate(posts).filter((post) => post.data.featured);
 const categoriesWithPostsCount = catagories.map((category) => {
@@ -31,14 +32,16 @@ const categoriesWithPostsCount = catagories.map((category) => {
 });
 ---
 
-<aside class={`${""}  px-0 lg:col-4 lg:px-6`}>
+<aside class={`${className} px-0 lg:px-6 lg:col-4`}>
   {
     about.enable && (
       <div class="relative rounded border border-border p-6 text-center dark:border-darkmode-border">
         <Image
-          width={100}
-          height={10}
-          class="-z-[1]"
+           
+          width={377}
+          height={273}
+          fit="fill"
+          class="-z-[1] absolute inset-0"
           src="/images/map.png"
           alt="bg-map"
           format="webp"
