@@ -1,33 +1,21 @@
 ---
 import Post from "@/components/post.astro";
-import { settings } from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
-import { getTaxonomy } from "@/lib/taxonomyParser.astro";
-import taxonomyFilter from "@/lib/utils/taxonomyFilter";
 import { slugify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
-import type { CollectionEntry } from "astro:content";
-import { getCollection } from "astro:content";
+import DirectusCms from "@/lib/cms/directus";
 
 export async function getStaticPaths() {
-  const categories = await getTaxonomy(settings.post_folder, "categories");
-  return categories.map((category) => {
+  const categories = await DirectusCms.GetAllCategories();
+  return categories.map((cat) => {
     return {
-      params: { category },
+      params: { category: cat.category.toLowerCase() },
     };
   });
 }
 
 const { category } = Astro.params;
-const posts = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
-);
-const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
-  posts,
-  "categories",
-  category!,
-);
+const posts = await DirectusCms.GetPostsByCategory(category!);
 ---
 
 <Base title={category}>
@@ -45,7 +33,7 @@ const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
             class="row rounded border border-border p-4 px-3 dark:border-darkmode-border lg:p-6"
           >
             {
-              filterByCategories.map((post, i) => (
+              posts.map((post, i) => (
                 <div class="col-12 mb-8 sm:col-6">
                   <Post {...post} />
                 </div>
@@ -53,7 +41,7 @@ const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
             }
           </div>
         </div>
-        <Sidebar posts={posts} />
+        <Sidebar/>
       </div>
     </div>
   </div>

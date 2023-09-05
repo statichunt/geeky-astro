@@ -1,0 +1,28 @@
+---
+import Landing from "@/layouts/Landing.astro";
+import DirectusCms from "@/lib/cms/directus";
+import FullPageLanding from "@/components/FullPageLanding.astro";
+import NormalPageLanding from "@/components/NormalPageLanding.astro";
+
+export async function getStaticPaths() {
+  const landings = await DirectusCms.GetAllLandingPages();
+  return landings.map((landing) => {
+    return {
+      params: { id: landing.id.toString()},
+      props: { landing },
+    };
+  });
+}
+// const { id } = Astro.params;
+const { landing } = Astro.props;
+---
+
+<div style=`background-color: ${landing.background_color};`>
+  <Landing>
+    {
+      landing.image_full_screen ?
+        <FullPageLanding landing={landing} /> :
+        <NormalPageLanding landing={landing} />
+    }
+  </Landing>
+</div>

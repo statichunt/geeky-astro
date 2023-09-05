@@ -1,0 +1,17 @@
+---
+const { landing } = Astro.props;
+---
+
+{/* Subscribe */}
+<div class="flex align-middle justify-center">
+  <form class="grid grid-cols-1 p-5" action=`${landing.navigate_to}`>
+    <button
+      class=`flex d-block btn rounded-full w-64 justify-center `
+      style=`background-color:${landing.button_color}; color:${landing.button_text_color};`
+      type="submit"
+    >
+      {landing.button_text}
+    </button>
+  </form>
+</div>
+

@@ -125,7 +125,7 @@ const Search = ({ searchList }: Props) => {
                     {image && (
                       <img
                         className="mb-6 w-full rounded"
-                        src={item.data.image}
+                        src={`${config.site.directus_url}/assets/${item.data.image}`}
                         alt={item.data.title}
                         width={445}
                         height={230}
@@ -136,28 +136,6 @@ const Search = ({ searchList }: Props) => {
                         {item.data.title}
                       </a>
                     </h4>
-                    <ul className="mb-4">
-                      <li className="mr-4 inline-block">
-                        <a href={`/authors/${slugify(author!)}`}>
-                          <FaRegUserCircle
-                            className={"-mt-1 mr-2 inline-block"}
-                          />
-                          {humanize(author ?? meta_author)}
-                        </a>
-                      </li>
-                      <li className="mr-4 inline-block">
-                        <FaRegFolder className={"-mt-1 mr-2 inline-block"} />
-                        {categories?.map((category, index) => (
-                          <a
-                            href={`/categories/${slugify(category)}`}
-                            key={category}
-                          >
-                            {humanize(category)}
-                            {index !== categories.length - 1 && ", "}
-                          </a>
-                        ))}
-                      </li>
-                    </ul>
                     <p className="mb-6">
                       {plainify(item.content?.slice(0, Number(summary_length)))}
                     </p>

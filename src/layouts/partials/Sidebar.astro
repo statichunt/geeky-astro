@@ -1,107 +1,49 @@
 ---
-import Logo from "@/components/Logo.astro";
-import Social from "@/components/Social.astro";
-import { settings, widgets } from "@/config/config.json";
-import { main } from "@/config/social.json";
+import { widgets, site } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
-import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
-import { sortByDate } from "@/lib/utils/sortFunctions";
-import { markdownify, slugify } from "@/lib/utils/textConverter";
 import { Image } from "@astrojs/image/components";
-import type { CollectionEntry } from "astro:content";
+import DirectusCms from "@/lib/cms/directus";
 
-type Props = {
-  posts: CollectionEntry<"posts">[];
-  className?: string
-};
-
-const { post_folder } = settings;
-const { about, categories, featured_posts, newsletter } = widgets;
-const { posts, className } = Astro.props;
-const catagories = await getTaxonomy("posts", "categories");
-const featuredPosts: CollectionEntry<"posts">[] = sortByDate(posts).filter((post) => post.data.featured);
-const categoriesWithPostsCount = catagories.map((category) => {
-  const filteredPosts = posts.filter((post) =>
-    post.data.categories?.includes(category),
-  );
-  return {
-    name: category,
-    posts: filteredPosts.length,
-  };
-});
+const posts = await DirectusCms.GetAllPosts();
+const featuredPosts = posts.filter((post) => post.featured);
+const { featured_posts, newsletter } = widgets;
+const { className } = Astro.props;
 ---
 
 <aside class={`${className} px-0 lg:px-6 lg:col-4`}>
-  {
-    about.enable && (
-      <div class="relative rounded border border-border p-6 text-center dark:border-darkmode-border">
-        <Image
-           
-          width={377}
-          height={273}
-          fit="fill"
-          class="-z-[1] absolute inset-0"
-          src="/images/map.png"
-          alt="bg-map"
-          format="webp"
-        />
-        <Logo />
+    {/* newsletter */}
+    {
+      newsletter.enable && (
+        <div class="mt-6  rounded border border-border p-6 text-center dark:border-darkmode-border">
+          <h4 class="section-title">{newsletter.title}</h4>
+          <p class="mt-10 text-xs">{newsletter.content}</p>
+          <form action="#" class="py-6">
+            <fieldset class="relative">
+              <input
+                class="newsletter-input form-input h-12 w-full rounded-3xl border-none bg-theme-light px-5 py-3 pr-12 text-dark placeholder:text-xs dark:bg-darkmode-theme-dark"
+                type="text"
+                placeholder="email"
+              />
+              <DynamicIcon
+                icon="FaEnvelope"
+                className="absolute top-1/2 right-5 -translate-y-1/2 text-xl transition duration-75"
+              />
+            </fieldset>
+            <button class="d-block  btn btn-primary mt-4 w-full" type="submit">
+              Sign Up
+            </button>
+          </form>
 
-        <p class="mt-8" set:html={markdownify(about.content)} />
-        <Social
-          className="socials sidebar-socials mt-6 justify-center"
-          source={main}
-        />
-      </div>
-    )
-  }
-
-  {/* categories widget */}
-  {
-    categories.enable && (
-      <div class="mt-6 rounded border border-border p-6 dark:border-darkmode-border">
-        <h4
-          class="section-title mb-12 text-center"
-          set:text={markdownify(featured_posts.title)}
-        />
-        <ul>
-          {categoriesWithPostsCount.map((category, i) => (
-            <li
-              class={`relative mb-2 flex items-center justify-between pl-6 text-[16px] font-bold capitalize text-dark dark:text-darkmode-light ${
-                i !== catagories.length - 1 &&
-                "border-b border-border  dark:border-darkmode-border"
-              }`}
-            >
-              <svg
-                class="absolute left-0 top-2.5"
-                width="20px"
-                height="20px"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11.7318 9.35984C12.0854 8.93556 12.7159 8.87824 13.1402 9.2318C13.5645 9.58537 13.6218 10.2159 13.2682 10.6402L8.26825 16.6402C7.91468 17.0645 7.28412 17.1218 6.85984 16.7682C6.43556 16.4147 6.37824 15.7841 6.7318 15.3598L11.7318 9.35984Z"
-                  fill="#2ba283"
-                />
-                <path
-                  d="M6.7318 4.64021C6.37824 4.21593 6.43556 3.58537 6.85984 3.2318C7.28412 2.87824 7.91468 2.93556 8.26825 3.35984L13.2682 9.35984C13.6218 9.78412 13.5645 10.4147 13.1402 10.7682C12.7159 11.1218 12.0854 11.0645 11.7318 10.6402L6.7318 4.64021Z"
-                  fill="#2ba283"
-                />
-              </svg>
-              <a class="py-2" href={`/categories/${slugify(category.name)}`}>
-                {slugify(category.name)}
-                <span class="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">
-                  {category.posts}
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )
-  }
+          <p class="text-[13px] font-medium text-prirmary">
+            By Singing Up, You Agree To
+            <a href={newsletter.privacy_policy_page} class="ml-1">
+              Privacy Policy
+            </a>
+          </p>
+        </div>
+      )
+    }
 
   {/* featured widget */}
   {
@@ -124,11 +66,11 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 "mb-6 border-b border-border pb-6 dark:border-darkmode-border"
               }`}
             >
-              {post.data.image && (
+              {post.image && (
                 <Image
                   class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
-                  src={post.data.image}
-                  alt={post.data.title}
+                  src={`${site.directus_url}/assets/${post.image}`}
+                  alt={post.title}
                   width={105}
                   height={85}
                   format="webp"
@@ -137,15 +79,15 @@ const categoriesWithPostsCount = catagories.map((category) => {
               <div>
                 <h3 class="h5 mb-2">
                   <a
-                    href={`/${post_folder}/${post.slug}`}
+                    href={`/posts/${post.slug}`}
                     class="block hover:text-primary"
                   >
-                    {post.data.title}
+                    {post.title}
                   </a>
                 </h3>
                 <p class="inline-flex items-center font-secondary text-xs">
                   <DynamicIcon className="mr-1.5" icon="FaRegCalendar" />
-                  {dateFormat(post.data.date!)}
+                  {dateFormat(post.date_created!)}
                 </p>
               </div>
             </div>
@@ -162,11 +104,11 @@ const categoriesWithPostsCount = catagories.map((category) => {
                   "mb-6 border-b dark:border-b-darkmode-border"
                 }`}
               >
-                {post.data.image && (
+                {post.image && (
                   <Image
                     class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
-                    src={post.data.image}
-                    alt={post.data.title}
+                    src={`${site.directus_url}/assets/${post.image}`}
+                    alt={post.title}
                     width={105}
                     height={85}
                     format="webp"
@@ -175,53 +117,20 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 <div>
                   <h3 class="h5 mb-2">
                     <a
-                      href={`/${post_folder}/${post.slug}`}
+                      href={`/posts/${post.slug}`}
                       class="block hover:text-primary"
                     >
-                      {post.data.title}
+                      {post.title}
                     </a>
                   </h3>
                   <p class="inline-flex items-center font-secondary text-xs">
                     <DynamicIcon className="mr-1.5" icon="FaRegCalendar" />
-                    {dateFormat(post.data.date!)}
+                    {dateFormat(post.date_created!)}
                   </p>
                 </div>
               </div>
             ))}
         </div>
-      </div>
-    )
-  }
-
-  {/* newsletter */}
-  {
-    newsletter.enable && (
-      <div class="mt-6  rounded border border-border p-6 text-center dark:border-darkmode-border">
-        <h4 class="section-title">{newsletter.title}</h4>
-        <p class="mt-10 text-xs">{newsletter.content}</p>
-        <form action="#" class="py-6">
-          <fieldset class="relative">
-            <input
-              class="newsletter-input form-input h-12 w-full rounded-3xl border-none bg-theme-light px-5 py-3 pr-12 text-dark placeholder:text-xs dark:bg-darkmode-theme-dark"
-              type="text"
-              placeholder="Type And Hit Enter"
-            />
-            <DynamicIcon
-              icon="FaEnvelope"
-              className="absolute top-1/2 right-5 -translate-y-1/2 text-xl transition duration-75"
-            />
-          </fieldset>
-          <button class="d-block  btn btn-primary mt-4 w-full" type="submit">
-            Sign In
-          </button>
-        </form>
-
-        <p class="text-[13px] font-medium text-prirmary">
-          By Singing Up, You Agree To
-          <a href={newsletter.privacy_policy_page} class="ml-1">
-            Privacy Policy
-          </a>
-        </p>
       </div>
     )
   }

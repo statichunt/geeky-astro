@@ -1,16 +1,17 @@
 ---
-import { metadata, settings } from "@/config/config.json";
+import { site, settings } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import dateFormat from "@/lib/utils/dateFormat";
 import { markdownify, slugify } from "@/lib/utils/textConverter";
 import { Image } from "@astrojs/image/components";
 import type { CollectionEntry } from "astro:content";
+import type Post from "@/lib/cms/types";
+
 const { post_folder } = settings;
 const { summary_length } = settings;
 
-type Props = CollectionEntry<"posts">;
-const { image, title, date, author, categories } = Astro.props.data;
-const { body, slug } = Astro.props;
+type Props = Post;
+const { image, title, date_created, tags, body, slug  } = Astro.props;
 ---
 
 <div class="post">
@@ -19,7 +20,7 @@ const { body, slug } = Astro.props;
       image && (
         <Image
           class="rounded"
-          src={image}
+          src={`${site.directus_url}/assets/${image}`}
           alt={title}
           width={405}
           height={208}
@@ -30,7 +31,7 @@ const { body, slug } = Astro.props;
 
     <ul class="absolute top-3 left-2 flex flex-wrap items-center">
       {
-        categories?.map((tag, index) => (
+        tags?.map((tag, index) => (
           <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
             <a
               aria-label="categories"
@@ -50,18 +51,9 @@ const { body, slug } = Astro.props;
     </a>
   </h3>
   <ul class="flex items-center space-x-4">
-    <li>
-      <a
-        class="inline-flex items-center font-secondary text-xs leading-3 p-0.5"
-        href="/about"
-      >
-        <DynamicIcon className="mr-1.5" icon="FaUser" />
-        {author ?? metadata.meta_author}
-      </a>
-    </li>
     <li class="inline-flex items-center font-secondary text-xs leading-3">
       <DynamicIcon className="mr-1.5" icon="FaRegCalendar" />
-      {dateFormat(date!)}
+      {dateFormat(date_created!)}
     </li>
   </ul>
   <p set:html={markdownify(body.slice(0, summary_length))} />

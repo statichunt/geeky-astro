@@ -1,0 +1,40 @@
+---
+import { site } from "@/config/config.json";
+import EnterMsisdn from "@/partials/EnterMsisdn.astro";
+import EnterPin from "@/partials/EnterPin.astro";
+import Subscribe from "@/partials/Subscribe.astro";
+const { landing } = Astro.props;
+const SubTemplate = !landing.enter_msisdn && !landing.enter_pin;
+---
+
+<div
+  class=`grid grid-cols-1 grid-rows-5`
+  style=`background-image: url(${site.directus_url}/assets/${landing.image}?height=1000&width=500&quality=80);
+  height: 800px;
+  background-position: center;
+  background-color: ${landing.background_color};`
+>
+  {/* CTA */}
+  <div class="pt-10 pb-5 px-5">
+    <Fragment set:html={landing.cta_text} />
+  </div>
+
+  {/* Enter Msisdn */}
+  {landing.enter_msisdn && <EnterMsisdn landing={landing} />}
+
+  {/* Enter Pin */}
+  {landing.enter_pin && <EnterPin landing={landing} />}
+
+  {/* Subscribe */}
+  {SubTemplate && <Subscribe landing={landing} />}
+
+  {/* Bottom Text */}
+  <div class="p-10">
+    <Fragment set:html={landing.bottom_text} />
+  </div>
+
+  {/* Footer */}
+  <div class="flex text-center place-content-end">
+    <Fragment set:html={landing.footer} />
+  </div>
+</div>

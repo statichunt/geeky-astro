@@ -1,7 +1,7 @@
 ---
 import Pagination from "@/components/Pagination.astro";
 import Post from "@/components/post.astro";
-import { settings } from "@/config/config.json";
+import { settings, site } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import Base from "@/layouts/Base.astro";
 import dateFormat from "@/lib/utils/dateFormat";
@@ -10,18 +10,20 @@ import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
 import type { HomePage } from "@/types";
 import { Image } from "@astrojs/image/components";
-import { CollectionEntry, getCollection, getEntry } from "astro:content";
+import { getEntry } from "astro:content";
 const { post_folder, pagination } = settings;
+import DirectusCms from "@/lib/cms/directus";
+
+const posts = await DirectusCms.GetAllPosts();
 
 const homepage = await getEntry("homepage", "-index");
 const { banner, featured_posts, promotion, recent_posts } =
   homepage.data as HomePage;
-const posts = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
-);
-const sortedPost: CollectionEntry<"posts">[] = sortByDate(posts);
-const featuredPosts = posts.filter((post) => post.data.featured);
+
+// create a sortedPosts array from posts array by ordering posts by date_created
+const sortedPost = sortByDate(posts);
+
+const featuredPosts = posts.filter((post) => post.featured);
 ---
 
 <Base>
@@ -98,13 +100,13 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                       {featuredPosts
                         .slice(1, featuredPosts.length)
                         .map((post) => {
-                          const { image, title, date } = post.data;
+                          const { image, title, date_created } = post;
                           return (
                             <div class={`mb-6 flex items-center pb-6`}>
                               {image && (
                                 <Image
                                   class="mr-3 h-[85px] rounded object-cover"
-                                  src={image}
+                                  src={`${site.directus_url}/assets/${post.image}`}
                                   alt={title}
                                   width={105}
                                   height={85}
@@ -114,7 +116,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                               <div>
                                 <h3 class="h5 mb-2">
                                   <a
-                                    href={`/${post_folder}/${post.slug}`}
+                                    href={`/posts/${post.slug}`}
                                     class="block hover:text-primary"
                                   >
                                     {title}
@@ -125,7 +127,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                                     className="mr-1.5"
                                     icon="FaRegCalendar"
                                   />
-                                  {dateFormat(date!)}
+                                  {dateFormat(date_created!)}
                                 </p>
                               </div>
                             </div>
@@ -135,22 +137,6 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                   </div>
                 </div>
               </div>
-            )
-          }
-
-          {/* Promotion */}
-          {
-            promotion.enable && (
-              <a href={promotion.link} class="section block pt-0">
-                <Image
-                  class="h-full w-full"
-                  height={115}
-                  width={800}
-                  src={promotion.image}
-                  alt="promotion"
-                  format="webp"
-                />
-              </a>
             )
           }
 
@@ -180,7 +166,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
             currentPage={1}
           />
         </div>
-        <Sidebar className="lg:mt-[9.5rem]" posts={posts} />
+        <Sidebar className="lg:mt-[9.5rem]" />
       </div>
     </div>
   </section>

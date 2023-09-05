@@ -3,23 +3,24 @@ import Logo from "@/components/Logo.astro";
 import Social from "@/components/Social.astro";
 import ThemeSwitcher from "@/components/ThemeSwitcher.astro";
 import config from "@/config/config.json";
-import menu from "@/config/menu.json";
 import { IoSearch } from "react-icons/io5/index.js";
 import social from "@/config/social.json";
-
-export interface ChildNavigationLink {
-  name: string;
-  url: string;
-}
+import Directus from "@/lib/cms/directus";
 
 export interface NavigationLink {
   name: string;
   url: string;
-  hasChildren?: boolean;
-  children?: ChildNavigationLink[];
 }
 
-const { main }: { main: NavigationLink[] } = menu;
+const categories = await Directus.GetAllCategories();
+let main: NavigationLink[] = [];
+categories.forEach((category) => {
+  main.push({
+    name: category.category,
+    url: category.url,
+  });
+});
+
 const { settings } = config;
 const { pathname } = Astro.url;
 ---
@@ -55,53 +56,17 @@ const { pathname } = Astro.url;
         {
           main.map((menu) => (
             <>
-              {menu.hasChildren ? (
-                <li class="nav-item nav-dropdown group relative">
-                  <span
-                    class={`nav-link inline-flex items-center ${
-                      menu.children?.map(({ url }) => url).includes(pathname) ||
-                      menu.children
-                        ?.map(({ url }) => `${url}/`)
-                        .includes(pathname)
-                        ? "active"
-                        : ""
-                    }`}
-                  >
-                    {menu.name}
-                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20">
-                      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                    </svg>
-                  </span>
-                  <ul class="nav-dropdown-list hidden transition-all duration-300 group-hover:top-[46px] group-hover:lg:block md:invisible md:absolute md:top-[60px] md:block md:opacity-0 md:group-hover:visible md:group-hover:opacity-100">
-                    {menu.children?.map((child) => (
-                      <li class="nav-dropdown-item">
-                        <a
-                          href={child.url}
-                          class={`nav-dropdown-link block ${
-                            (pathname === `${child.url}/` ||
-                              pathname === child.url) &&
-                            "active"
-                          }`}
-                        >
-                          {child.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ) : (
-                <li class="nav-item">
-                  <a
-                    href={menu.url}
-                    class={`nav-link block ${
-                      (pathname === `${menu.url}/` || pathname === menu.url) &&
-                      "active"
-                    }`}
-                  >
-                    {menu.name}
-                  </a>
-                </li>
-              )}
+              <li class="nav-item">
+                <a
+                  href={menu.url}
+                  class={`nav-link block ${
+                    (pathname === `${menu.url}/` || pathname === menu.url) &&
+                    "active"
+                  }`}
+                >
+                  {menu.name}
+                </a>
+              </li>
             </>
           ))
         }

@@ -3,10 +3,11 @@
     "title": "Geeeky Astro",
     "base_url": "https://example.com",
     "base_path": "/",
+    "directus_url" : "http://localhost:8055",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
     "logo": "/images/logo.png",
-    "logo_darkmode": "/images/logo-darkmode.png",
+    "logo_darkmode": "/images/logo-dark.png",
     "logo_width": "150",
     "logo_height": "39",
     "logo_text": "Geeky"
@@ -16,7 +17,7 @@
     "search": true,
     "sticky_header": false,
     "theme_switcher": true,
-    "default_theme": "system",
+    "default_theme": "dark",
     "pagination": 6,
     "InnerPaginationOptions": {
       "enableTop": false,
@@ -34,7 +35,7 @@
 
   "widgets": {
     "about": {
-      "enable": true,
+      "enable": false,
       "content": "Lorem ipsum dolor sit amet, conse tfctetur adipiscing elit. Vel in in donec iaculis tempasus odio nunc laoreet . Libero ullam rgscorper."
     },
     "featured_posts": {
@@ -49,7 +50,7 @@
     "newsletter": {
       "enable": true,
       "title": "Newsletter",
-      "content": "Join thousands of Tiny Salt subscribers and get our best recipes delivered each week!",
+      "content": "Join thousands of DizzyPulse subscribers and receive our latest news and promotions!",
       "privacy_policy_page": "#",
       "malichipm_url": ""
     }
@@ -61,13 +62,13 @@
   },
 
   "metadata": {
-    "meta_author": "statichunt",
+    "meta_author": "dizzyPulse AI",
     "meta_image": "/images/og-image.png",
-    "meta_description": "astro and tailwind boilerplate"
+    "meta_description": "dizzyPulse AI"
   },
 
   "disqus": {
-    "enable": true,
+    "enable": false,
     "shortname": "themefisher-template",
     "settings": {}
   }
