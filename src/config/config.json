@@ -19,10 +19,6 @@
     "theme_switcher": true,
     "default_theme": "dark",
     "pagination": 6,
-    "InnerPaginationOptions": {
-      "enableTop": false,
-      "enableBottom": true
-    },
     "summary_length": 200,
     "post_folder": "posts"
   },
