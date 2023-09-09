@@ -32,32 +32,3 @@ export interface HomePage {
     title: string;
   };
 }
-
-// aboutpage type definition
-export interface AboutPage {
-  title: string;
-  image: string;
-  description: string;
-  education: {
-    title: string;
-    degrees: Array<{
-      university: string;
-      content: string;
-    }>;
-  };
-  experience: {
-    title: string;
-    list: Array<string>;
-  };
-}
-
-// contact page type definition
-export interface ContactPage {
-  title: string;
-  description: string;
-  form: string;
-  social_links: Array<{
-    icon: string;
-    content: string;
-  }>;
-}

@@ -6,21 +6,21 @@ import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { humanize, markdownify } from "@/lib/utils/textConverter";
 import { getCollection } from "astro:content";
 
-const { post_folder } = config.settings;
-const posts = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
-);
-const categories = await getTaxonomy(post_folder, "categories");
-const categoriesWithPostsCount = categories.map((category) => {
-  const filteredPosts = posts.filter((post) =>
-    post.data.categories?.includes(category),
-  );
-  return {
-    name: category,
-    posts: filteredPosts.length,
-  };
-});
+// const { post_folder } = config.settings;
+// const posts = await getCollection(
+//   "posts",
+//   ({ data, id }) => !id.startsWith("-") && !data.draft,
+// );
+// const categories = await getTaxonomy(post_folder, "categories");
+// const categoriesWithPostsCount = categories.map((category) => {
+//   const filteredPosts = posts.filter((post) =>
+//     post.data.categories?.includes(category),
+//   );
+//   return {
+//     name: category,
+//     posts: filteredPosts.length,
+//   };
+// });
 ---
 
 <Base title={"Categories"}>
@@ -32,7 +32,7 @@ const categoriesWithPostsCount = categories.map((category) => {
 
     <div class="container pt-12 text-center">
       <ul class="row">
-        {
+        <!-- {
           categoriesWithPostsCount.map((category, i) => (
             <li class="mt-4 block lg:col-4 xl:col-3">
               <a
@@ -44,7 +44,7 @@ const categoriesWithPostsCount = categories.map((category) => {
               </a>
             </li>
           ))
-        }
+        } -->
       </ul>
     </div>
   </section>
