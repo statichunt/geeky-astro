@@ -64,7 +64,7 @@ const { title, image, date_created, body} = post;
               </ul>
             </div>
 
-            <h1 class="lg:text-[42px] mt-4" set:text={markdownify(title)} />
+            <h1 class="lg:text-[42px] mt-4" set:text={title} />
             <ul class="flex items-center space-x-4">
               <li class="inline-flex items-center font-secondary text-xs leading-3">
                 <DynamicIcon icon="FaRegCalendar" className="mr-1.5" />

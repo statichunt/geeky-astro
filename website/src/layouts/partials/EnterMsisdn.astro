@@ -5,7 +5,11 @@ const { landing } = Astro.props;
 {/* Enter Msisdn */}
 <div class="flex align-middle justify-center">
   <form class="grid grid-cols-1 p-5" action=`${landing.navigate_to}`>
-    <input class="rounded-lg border-gray-600" type="number" placeholder="PIN" />
+    <input
+      class="rounded-lg border-gray-600 text-black"
+      type="tel"
+      placeholder="Enter your number"
+    />
     <button
       class=`d-block btn mt-4 rounded-full w-64 justify-center`
       style=`background-color:${landing.button_color}; color:${landing.button_text_color};`
@@ -15,4 +19,3 @@ const { landing } = Astro.props;
     </button>
   </form>
 </div>
-

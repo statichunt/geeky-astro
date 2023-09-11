@@ -3,7 +3,7 @@
     "title": "Geeeky Astro",
     "base_url": "https://example.com",
     "base_path": "/",
-    "directus_url" : "http://localhost:8055",
+    "directus_url" : "http://directus:8055",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
     "logo": "/images/logo.png",
