@@ -1,55 +1,59 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"log"
+	"net"
+	"strings"
+
 	"net/http"
 	"os"
-	"os/exec"
 
-	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"golang.org/x/exp/slog"
 )
 
 func main() {
-	http.Handle("/metrics", promhttp.Handler())
-	fs := http.FileServer(http.Dir("../website/dist"))
-	http.Handle("/", fs)
-	http.HandleFunc("/api/rebuild", rebuildHandler)
+	ws := &Webserver{
+		server: http.NewServeMux(),
+		logger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})),
+		port:   80,
+		mw:     &CustomMiddleWare{logger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))},
+	}
+	ws.RegisterMetrics()
+	ws.RegisterStaticFileServer()
+	ws.RegisterApiEndpoints()
 
-	log.Print("Listening on :80...")
-	err := http.ListenAndServe(":80", nil)
+	err := ws.Start()
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func rebuildHandler(w http.ResponseWriter, r *http.Request) {
-	err := rebuild()
-	if err != nil {
-		fmt.Fprintf(w, "Error: %s", err)
-		return
-	}
-	fmt.Fprintf(w, "Rebuild complete")
-}
+func getIP(r *http.Request) (string, error) {
+	ips := r.Header.Get("X-Forwarded-For")
+	splitIps := strings.Split(ips, ",")
 
-func rebuild() error {
-	log.Println("Rebuilding...")
-	curDir, err := os.Getwd()
-	log.Println("curDir", curDir)
-	if err != nil {
-		return err
-	}
-	if curDir != "/website" {
-		err := os.Chdir("website")
-		if err != nil {
-			return err
+	if len(splitIps) > 0 {
+		// get last IP in list since ELB prepends other user defined IPs, meaning the last one is the actual client IP.
+		netIP := net.ParseIP(splitIps[len(splitIps)-1])
+		if netIP != nil {
+			return netIP.String(), nil
 		}
 	}
-	cmd := exec.Command("npm", "run", "build")
-	out, err := cmd.Output()
+
+	ip, _, err := net.SplitHostPort(r.RemoteAddr)
 	if err != nil {
-		return err
+		return "", err
 	}
-	fmt.Println(string(out))
-	return nil
+
+	netIP := net.ParseIP(ip)
+	if netIP != nil {
+		ip := netIP.String()
+		if ip == "::1" {
+			return "127.0.0.1", nil
+		}
+		return ip, nil
+	}
+
+	return "", errors.New("IP not found")
 }

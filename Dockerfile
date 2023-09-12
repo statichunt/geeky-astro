@@ -1,8 +1,8 @@
 FROM golang:1.21-alpine3.18 as build-env
 
 # Install git
-RUN apk update apk install
-RUN apk add --no-cache git
+RUN apk update && apk upgrade
+RUN apk --no-cache add git ca-certificates
 
 # Create a non-root user
 RUN adduser -D -g '' appuser
@@ -14,11 +14,10 @@ WORKDIR /app
 # Copy the rest of the application source code
 COPY ./webserver/go.mod .
 COPY ./webserver/go.sum .
-COPY ./webserver/main.go .
+COPY ./webserver/ .
 
-# Build the application
-RUN apk --no-cache add ca-certificates
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /app/app ./main.go
+# # Build the application
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o /app/app .
 
 # Use a minimalistic base image
 FROM alpine:3.18
