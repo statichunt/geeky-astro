@@ -17,15 +17,15 @@ export async function getStaticPaths() {
 const { landing } = Astro.props;
 ---
 
-<div style=`background-color: ${landing.background_color};`>
   <Landing>
+    <div style=`background-color: ${landing.background_color};`>
     {
       landing.image_full_screen ?
         <FullPageLanding landing={landing} /> :
         <NormalPageLanding landing={landing} />
     }
+    </div>
   </Landing>
-</div>
 
   </body>
 </html>

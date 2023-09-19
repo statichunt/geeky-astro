@@ -1,16 +1,17 @@
 {
   "site": {
-    "title": "Geeeky Astro",
+    "title": "DizzyPulse",
     "base_url": "https://example.com",
     "base_path": "/",
-    "directus_url" : "http://directus:8055",
+    "directus_url" : "http://0.0.0.0:8055",
+    "directus_image_url": "http://0.0.0.0:8055",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",
     "logo": "/images/logo.png",
     "logo_darkmode": "/images/logo-dark.png",
     "logo_width": "150",
     "logo_height": "39",
-    "logo_text": "Geeky"
+    "logo_text": "DizzyPulse"
   },
 
   "settings": {
@@ -25,8 +26,8 @@
 
   "params": {
     "contact_form_action": "#",
-    "footer_content": "Lorem ipsum dolor sit amt, conse adip iscing. donec iaculis tempasus laoreet. Libero ullam rgscper.",
-    "copyright": "Designed and Developed By [Statichunt](https://statichunt.com/)"
+    "footer_content": "",
+    "copyright": "© 2021 DizzyPulse. All rights reserved."
   },
 
   "widgets": {

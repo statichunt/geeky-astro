@@ -40,7 +40,7 @@ func (web *Webserver) RegisterStaticFileServer() {
 func (web *Webserver) RegisterApiEndpoints() {
 	web.logger.Debug("Registering api endpoints")
 	apiHandler := http.HandlerFunc(rebuildHandler)
-	web.server.Handle("/api/rebuild", web.mw.WithLoggingMiddleware(apiHandler))
+	web.server.Handle("/api/rebuild", web.mw.WithMetricsMiddleware(web.mw.WithLoggingMiddleware(apiHandler)))
 }
 
 func (web *Webserver) Start() error {

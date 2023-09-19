@@ -8,14 +8,14 @@ const SubTemplate = !landing.enter_msisdn && !landing.enter_pin;
 ---
 
 <div
-  class=`grid grid-cols-1 grid-rows-5`
-  style=`background-image: url(${site.directus_url}/assets/${landing.image}?height=1000&width=500&quality=80);
+  class=`flex flex-col justify-evenly`
+  style=`background-image: url(${site.directus_image_url}/assets/${landing.image}?height=1000&width=500&quality=80);
   height: 800px;
   background-position: center;
   background-color: ${landing.background_color};`
 >
   {/* CTA */}
-  <div class="pt-10 pb-5 px-5">
+  <div class=" pt-10">
     <Fragment set:html={landing.cta_text} />
   </div>
 
@@ -29,12 +29,12 @@ const SubTemplate = !landing.enter_msisdn && !landing.enter_pin;
   {SubTemplate && <Subscribe landing={landing} />}
 
   {/* Bottom Text */}
-  <div class="p-10">
+  <div class="">
     <Fragment set:html={landing.bottom_text} />
   </div>
 
   {/* Footer */}
-  <div class="flex text-center place-content-end">
+  <div class="">
     <Fragment set:html={landing.footer} />
   </div>
 </div>
