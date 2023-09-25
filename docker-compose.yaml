@@ -27,7 +27,7 @@ services:
       - loki
 
   directus:
-    image: directus/directus:10.6.1
+    image: directus/directus:10.6.2
     ports:
       - 8055:8055
     volumes:
@@ -48,7 +48,7 @@ services:
 
       CACHE_ENABLED: 'true'
       CACHE_STORE: 'redis'
-      CACHE_AUTO_PURGE: 'true'
+      CACHE_AUTO_PURGE: 'create,update'
       IMPORT_IP_DENY_LIST: '' # REMOVE FOR PRODUCTION
       REDIS: 'redis://cache:6379'
       WEBSOCKETS_ENABLED: 'false'
@@ -63,7 +63,7 @@ services:
     build: 
       dockerfile: ./Dockerfile
     ports:
-      - 80:80
+      - 3333:3333
     links:
       - directus
       - promtail

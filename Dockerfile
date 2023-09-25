@@ -37,13 +37,11 @@ RUN rm -rf node_modules
 RUN rm -rf package-lock.json
 RUN apk add --no-cache nodejs npm
 RUN npm install
+
 WORKDIR /
 
-# Permissions to expose port 80
-RUN apk --no-cache add libcap && setcap 'cap_net_bind_service=+ep' /webserver/app
-
-# Add the appuser to the passwd file
-RUN echo "appuser:x:10001:10001::/:" >> /etc/passwd
+# Change permissions of the website directory, should be owned by appuser
+RUN chown -R appuser:appuser website
 
 # Switch to the non-root user
 USER appuser

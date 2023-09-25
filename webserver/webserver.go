@@ -32,7 +32,11 @@ func (web *Webserver) RegisterMetrics() {
 
 func (web *Webserver) RegisterStaticFileServer() {
 	web.logger.Debug("Registering static file server")
-	fs := http.FileServer(http.Dir("../website/dist"))
+	err := rebuild()
+	if err != nil {
+		web.logger.Error("Error rebuilding website", "error", err)
+	}
+	fs := http.FileServer(http.Dir("../website/serve"))
 
 	web.server.Handle("/", web.mw.WithMetricsMiddleware(web.mw.WithLoggingMiddleware(fs)))
 }

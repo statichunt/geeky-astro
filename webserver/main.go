@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"io"
 	"log"
 	"net"
 	"strings"
@@ -16,7 +17,7 @@ func main() {
 	ws := &Webserver{
 		server: http.NewServeMux(),
 		logger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug})),
-		port:   80,
+		port:   3333,
 		mw:     &CustomMiddleWare{logger: slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}))},
 	}
 	ws.RegisterMetrics()
@@ -56,4 +57,34 @@ func getIP(r *http.Request) (string, error) {
 	}
 
 	return "", errors.New("IP not found")
+}
+
+func MoveCrossDevice(source, destination string) error {
+	src, err := os.Open(source)
+	if err != nil {
+		return err
+	}
+	dst, err := os.Create(destination)
+	if err != nil {
+		src.Close()
+		return err
+	}
+	_, err = io.Copy(dst, src)
+	src.Close()
+	dst.Close()
+	if err != nil {
+		return err
+	}
+	fi, err := os.Stat(source)
+	if err != nil {
+		os.Remove(destination)
+		return err
+	}
+	err = os.Chmod(destination, fi.Mode())
+	if err != nil {
+		os.Remove(destination)
+		return err
+	}
+	os.Remove(source)
+	return nil
 }
