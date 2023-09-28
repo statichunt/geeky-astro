@@ -1,6 +1,6 @@
-[build]
-publish = "dist"
-command = "yarn build"
+# [build]
+# publish = "dist"
+# command = "yarn build"
 
-[build.environment]
-NODE_VERSION = "18"
+# [build.environment]
+# NODE_VERSION = "18"
