@@ -17,6 +17,12 @@ local-backup:
 local-stop: 
 	docker-compose down
 
+.PHONY: load-test
+# Loadtest the targets
+load-test: 
+	@echo "Load testing the website"
+	k6 run loadtest.js
+
 # show help
 help:
 	@echo ''

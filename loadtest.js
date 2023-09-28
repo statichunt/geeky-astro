@@ -13,7 +13,7 @@ export default function () {
     const pages = ['/', '/categories/rugby/', '/posts/springboks-vs-scotland/', '/posts/wales-triumph-over-fiji-in-thrilling-rugby-world-cup-opener/']
 
     for (const page of pages) {
-        const res = http.get(`http://localhost${page}`);
+        const res = http.get(`http://localhost:3333/${page}`);
         check(res, {
             'status was 200': (r) => r.status == 200,
             'transaction time OK': (r) => r.timings.duration < 200,

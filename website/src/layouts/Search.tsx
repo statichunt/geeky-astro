@@ -125,7 +125,7 @@ const Search = ({ searchList }: Props) => {
                     {image && (
                       <img
                         className="mb-6 w-full rounded"
-                        src={`${config.site.directus_url}/assets/${item.data.image}`}
+                        src={`${config.site.directus_image_url}/assets/${item.data.image}`}
                         alt={item.data.title}
                         width={445}
                         height={230}

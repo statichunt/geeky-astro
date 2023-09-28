@@ -25,7 +25,7 @@ if (theme.fonts.font_family.secondary) {
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
-  safelist: [{ pattern: /^swiper-/ }],
+  // safelist: [{ pattern: /^swiper-/ }],
   darkMode: "class",
   theme: {
     screens: {

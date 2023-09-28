@@ -3,7 +3,7 @@ import { site, settings } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import dateFormat from "@/lib/utils/dateFormat";
 import { markdownify, slugify } from "@/lib/utils/textConverter";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import type Post from "@/lib/cms/types";
 
@@ -19,8 +19,8 @@ const { image, title, date_created, tags, body, slug  } = Astro.props;
     {
       image && (
         <Image
-          class="rounded"
-          src={`${site.directus_url}/assets/${image}`}
+          class="rounded max-h-48 w-full object-cover"
+          src={`${site.directus_image_url}/assets/${image}`}
           alt={title}
           width={405}
           height={208}

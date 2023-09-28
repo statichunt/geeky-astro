@@ -9,7 +9,7 @@ import { sortByDate } from "@/lib/utils/sortFunctions";
 import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
 import type { HomePage } from "@/types";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import { getEntry } from "astro:content";
 const { post_folder, pagination } = settings;
 import DirectusCms from "@/lib/cms/directus";
@@ -105,10 +105,10 @@ const featuredPosts = posts.filter((post) => post.featured);
                             <div class={`mb-6 flex items-center pb-6`}>
                               {image && (
                                 <Image
-                                  class="mr-3 h-[85px] rounded object-cover"
-                                  src={`${site.directus_url}/assets/${post.image}`}
+                                  class="mr-3 h-[85px] w-[85px] rounded object-cover object-center"
+                                  src={`${site.directus_image_url}/assets/${post.image}`}
                                   alt={title}
-                                  width={105}
+                                  width={85}
                                   height={85}
                                   format="webp"
                                 />

@@ -34,4 +34,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-    - targets: ['webserver:80']
+    - targets: ['webserver:3333']

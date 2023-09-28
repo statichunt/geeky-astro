@@ -27,11 +27,12 @@ services:
       - loki
 
   directus:
-    image: directus/directus:10.6.2
+    image: directus/directus:10.6.3
     ports:
       - 8055:8055
     volumes:
       - ./cms/uploads:/directus/uploads
+      - ./cms/extensions:/directus/extensions
     depends_on:      
       - database
       - cache
@@ -52,6 +53,7 @@ services:
       IMPORT_IP_DENY_LIST: '' # REMOVE FOR PRODUCTION
       REDIS: 'redis://cache:6379'
       WEBSOCKETS_ENABLED: 'false'
+      EXTENSIONS_AUTO_RELOAD: 'true'
 
       ADMIN_EMAIL: 'admin@example.com'
       ADMIN_PASSWORD: 'd1r3ctu5'
@@ -66,66 +68,66 @@ services:
       - 3333:3333
     links:
       - directus
-      - promtail
-      - grafana
-      - alertmanager
-      - prometheus
-      - loki
+      # - promtail
+      # - grafana
+      # - alertmanager
+      # - prometheus
+      # - loki
 
     depends_on:      
       - directus
     networks:
       - loki
   
-  prometheus:
-    image: prom/prometheus
-    ports:
-      - 9090:9090
-    volumes:
-      - ./devops/prometheus.yml:/etc/prometheus/prometheus.yml
-    networks:
-      - loki
+  # prometheus:
+  #   image: prom/prometheus
+  #   ports:
+  #     - 9090:9090
+  #   volumes:
+  #     - ./devops/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     - loki
   
-  loki:
-    image: grafana/loki
-    ports:
-      - "3100:3100"
-    volumes:
-      - "./devops/loki:/mnt/config"  
-    command: -config.file=/mnt/config/loki-config.yaml
-    networks:
-      - loki
+  # loki:
+  #   image: grafana/loki
+  #   ports:
+  #     - "3100:3100"
+  #   volumes:
+  #     - "./devops/loki:/mnt/config"  
+  #   command: -config.file=/mnt/config/loki-config.yaml
+  #   networks:
+  #     - loki
   
-  promtail:
-    image: grafana/promtail
-    volumes:
-      - "./devops/promtail:/mnt/config"
-      - "/var/lib/docker/containers:/var/lib/docker/containers"
-    command: -config.file=/mnt/config/promtail-config.yaml
-    networks:
-      - loki
+  # promtail:
+  #   image: grafana/promtail
+  #   volumes:
+  #     - "./devops/promtail:/mnt/config"
+  #     - "/var/lib/docker/containers:/var/lib/docker/containers"
+  #   command: -config.file=/mnt/config/promtail-config.yaml
+  #   networks:
+  #     - loki
 
-  grafana:
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=secret
-      - GF_USERS_ALLOW_SIGN_UP=false
-    image: grafana/grafana:latest
-    volumes:
-      - "./devops/grafana/grafana_data:/var/lib/grafana"
-    ports:
-      - "3000:3000"
-    networks:
-      - loki
+  # grafana:
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=secret
+  #     - GF_USERS_ALLOW_SIGN_UP=false
+  #   image: grafana/grafana:latest
+  #   volumes:
+  #     - "./devops/grafana/grafana_data:/var/lib/grafana"
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - loki
 
-  alertmanager:
-    image: prom/alertmanager
-    container_name: alertmanager
-    command:
-      - '--config.file=/etc/alertmanager/config.yml'
-      - '--storage.path=/alertmanager'
-    volumes:
-      - ./devops/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml
-    ports:
-      - 9093:9093
-    networks:
-      - loki
+  # alertmanager:
+  #   image: prom/alertmanager
+  #   container_name: alertmanager
+  #   command:
+  #     - '--config.file=/etc/alertmanager/config.yml'
+  #     - '--storage.path=/alertmanager'
+  #   volumes:
+  #     - ./devops/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml
+  #   ports:
+  #     - 9093:9093
+  #   networks:
+  #     - loki

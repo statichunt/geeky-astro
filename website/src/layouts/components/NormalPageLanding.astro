@@ -3,7 +3,7 @@ import { site } from "@/config/config.json";
 import EnterMsisdn from "@/partials/EnterMsisdn.astro";
 import EnterPin from "@/partials/EnterPin.astro";
 import Subscribe from "@/partials/Subscribe.astro";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 const { landing } = Astro.props;
 const SubTemplate = !landing.enter_msisdn && !landing.enter_pin;
 ---
@@ -14,7 +14,7 @@ const SubTemplate = !landing.enter_msisdn && !landing.enter_pin;
     (
       <div>
         <Image
-          src={`${site.directus_url}/assets/${landing.image}`}
+          src={`${site.directus_image_url}/assets/${landing.image}`}
           height={500}
           width={1000}
           alt={landing.name}

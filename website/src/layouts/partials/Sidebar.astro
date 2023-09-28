@@ -2,7 +2,7 @@
 import { widgets, site } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import dateFormat from "@/lib/utils/dateFormat";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import DirectusCms from "@/lib/cms/directus";
 
 const posts = await DirectusCms.GetAllPosts();
@@ -69,7 +69,7 @@ const { className } = Astro.props;
               {post.image && (
                 <Image
                   class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
-                  src={`${site.directus_url}/assets/${post.image}`}
+                  src={`${site.directus_image_url}/assets/${post.image}`}
                   alt={post.title}
                   width={105}
                   height={85}
@@ -107,7 +107,7 @@ const { className } = Astro.props;
                 {post.image && (
                   <Image
                     class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
-                    src={`${site.directus_url}/assets/${post.image}`}
+                    src={`${site.directus_image_url}/assets/${post.image}`}
                     alt={post.title}
                     width={105}
                     height={85}

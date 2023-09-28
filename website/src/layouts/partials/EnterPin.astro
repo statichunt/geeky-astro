@@ -1,11 +1,17 @@
 ---
 const { landing } = Astro.props;
 ---
-
 {/* Enter Msisdn */}
 <div class="flex align-middle justify-center">
   <form class="grid grid-cols-1 p-5" action=`${landing.navigate_to}`>
-    <input class="rounded-lg border-gray-600 text-black" type="number" placeholder="PIN" />
+    <input
+      class="rounded-lg border-gray-600 text-black"
+      autocomplete="one-time-code"
+      type="text"
+      inputmode="numeric"
+      placeholder="PIN"
+      required
+      />
     <button
       class=`d-block btn mt-4 rounded-full w-64 justify-center`
       style=`background-color:${landing.button_color}; color:${landing.button_text_color};`
@@ -16,3 +22,27 @@ const { landing } = Astro.props;
   </form>
 </div>
 
+<script>
+  if ('OTPCredential' in window) {
+  window.addEventListener('DOMContentLoaded', e => {
+    const input = document.querySelector('input[autocomplete="one-time-code"]');
+    if (!input) return;
+    const ac = new AbortController();
+    const form = input.closest('form');
+    if (form) {
+      form.addEventListener('submit', e => {
+        ac.abort();
+      });
+    }
+    navigator.credentials.get({
+      otp: { transport:['sms'] },
+      signal: ac.signal
+    }).then(otp => {
+      input.value = otp.code;
+      if (form) form.submit();
+    }).catch(err => {
+      console.log(err);
+    });
+  });
+}
+</script>

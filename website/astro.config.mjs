@@ -1,4 +1,3 @@
-import image from "@astrojs/image";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -7,7 +6,8 @@ import AutoImport from "astro-auto-import";
 import { defineConfig } from "astro/config";
 import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
-import config from "./src/config/config.json"
+import config from "./src/config/config.json";
+// import image from "astro:assets";
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,9 +22,9 @@ export default defineConfig({
         applyBaseStyles: false,
       },
     }),
-    image({
-      serviceEntryPoint: "@astrojs/image/sharp",
-    }),
+    // image({
+    //   serviceEntryPoint: "@astrojs/image/sharp",
+    // }),
     AutoImport({
       imports: [
         "@/shortcodes/Button",

@@ -6,7 +6,7 @@ import Base from "@/layouts/Base.astro";
 import dateFormat from "@/lib/utils/dateFormat";
 import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import DirectusCms from "@/lib/cms/directus";
 
 export async function getStaticPaths() {
@@ -38,11 +38,13 @@ const { title, image, date_created, body} = post;
               {
                 image && (
                   <Image
-                    src={`${site.directus_url}/assets/${image}`}
-                    height={500}
-                    width={1000}
+                    src={`${site.directus_image_url}/assets/${image}`}
+                    height={200}
+                    width={800}
                     alt={title}
-                    class="rounded-lg"
+                    decoding="async"
+                    loading="lazy"
+                    class="rounded-lg max-h-[500px] w-full object-cover"
                     format="webp"
                   />
                 )
