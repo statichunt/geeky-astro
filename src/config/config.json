@@ -50,7 +50,7 @@
       "enable": true,
       "title": "Newsletter",
       "content": "Join thousands of Tiny Salt subscribers and get our best recipes delivered each week!",
-      "privacy_policy_page": "#",
+      "privacy_policy_page": "/privacy-policy",
       "malichipm_url": ""
     }
   },

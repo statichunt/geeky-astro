@@ -3,7 +3,7 @@ import { metadata, settings } from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import dateFormat from "@/lib/utils/dateFormat";
 import { markdownify, slugify } from "@/lib/utils/textConverter";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 const { post_folder } = settings;
 const { summary_length } = settings;
