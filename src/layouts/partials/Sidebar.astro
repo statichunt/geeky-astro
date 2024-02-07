@@ -8,7 +8,7 @@ import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import { markdownify, slugify } from "@/lib/utils/textConverter";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
 type Props = {
@@ -40,7 +40,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
            
           width={377}
           height={273}
-          fit="fill"
+          style={{ objectFit: "contain" }}
           class="-z-[1] absolute inset-0"
           src="/images/map.png"
           alt="bg-map"
@@ -229,6 +229,8 @@ const categoriesWithPostsCount = catagories.map((category) => {
 
 
 <script>
+    // astro:page-load event is fired when the page is loaded
+    document.addEventListener("astro:page-load", () => {
   const tabButtons = document.querySelectorAll("[tab-button]") as NodeListOf<HTMLButtonElement>;
   tabButtons.forEach(button => {
     button.addEventListener("click", function(){
@@ -247,4 +249,5 @@ const categoriesWithPostsCount = catagories.map((category) => {
       document.querySelector( "."  + target)?.classList.add("block");
     })
   })
+    });
 </script>

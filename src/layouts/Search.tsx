@@ -3,11 +3,7 @@ import { humanize, plainify, slugify } from "@/lib/utils/textConverter";
 import type { CollectionEntry } from "astro:content";
 import Fuse from "fuse.js";
 import React, { useEffect, useRef, useState } from "react";
-import {
-  FaRegFolder,
-  FaRegUserCircle,
-  FaSearch,
-} from "react-icons/fa/index.js";
+import { FaRegFolder, FaRegUserCircle, FaSearch } from "react-icons/fa";
 
 const { summary_length, post_folder } = config.settings;
 
@@ -76,7 +72,7 @@ const Search = ({ searchList }: Props) => {
           <div className="lg:col-8">
             <div className="flex flex-nowrap">
               <input
-                className="form-input p-4 rounded-l-lg bg-theme-light w-full"
+                className="form-input p-4 rounded-l-lg bg-theme-light dark:bg-theme-dark w-full"
                 placeholder="Search posts"
                 type="search"
                 name="search"
@@ -147,7 +143,7 @@ const Search = ({ searchList }: Props) => {
                       </li>
                       <li className="mr-4 inline-block">
                         <FaRegFolder className={"-mt-1 mr-2 inline-block"} />
-                        {categories?.map((category, index) => (
+                        {categories?.map((category: any, index: number) => (
                           <a
                             href={`/categories/${slugify(category)}`}
                             key={category}

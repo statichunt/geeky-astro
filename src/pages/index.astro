@@ -9,8 +9,8 @@ import { sortByDate } from "@/lib/utils/sortFunctions";
 import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
 import type { HomePage } from "@/types";
-import { Image } from "@astrojs/image/components";
-import { CollectionEntry, getCollection, getEntry } from "astro:content";
+import { Image } from "astro:assets";
+import { type CollectionEntry, getCollection, getEntry } from "astro:content";
 const { post_folder, pagination } = settings;
 
 const homepage = await getEntry("homepage", "-index");
@@ -32,7 +32,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
       src={"/images/banner-bg-shape.png"}
       width={1905}
       height={351}
-      fit="contain"
+      style={{ objectFit: "contain" }}
       alt="banner-shape"
     />
 

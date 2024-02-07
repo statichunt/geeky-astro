@@ -5,7 +5,7 @@ import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import { markdownify } from "@/lib/utils/textConverter";
-import { CollectionEntry, getCollection, getEntry } from "astro:content";
+import { getCollection, getEntry, type CollectionEntry } from "astro:content";
 const { pagination } = config.settings;
 
 export async function getStaticPaths() {
@@ -24,6 +24,7 @@ export async function getStaticPaths() {
 
   return paths;
 }
+
 const { slug } = Astro.params;
 const { data } = await getEntry("posts", "-index");
 const post = await getCollection(

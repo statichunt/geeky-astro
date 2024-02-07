@@ -4,8 +4,8 @@
 </h2>
 
 <p align=center>
-  <a href="https://github.com/withastro/astro/releases/tag/astro%402.0.11" alt="Contributors">
-    <img src="https://img.shields.io/static/v1?label=ASTRO&message=2.0&color=000&logo=astro" />
+  <a href="https://github.com/withastro/astro/releases/tag/astro%404.3.3" alt="Contributors">
+    <img src="https://img.shields.io/static/v1?label=ASTRO&message=4.3&color=000&logo=astro" />
   </a>
 
   <a href="https://github.com/statichunt/geeky-astro/blob/main/LICENSE">

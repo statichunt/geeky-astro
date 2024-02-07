@@ -4,7 +4,7 @@ import DynamicIcon from "@/helpers/DynamicIcon";
 import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import type { ContactPage } from "@/types/index";
-import { Image } from "@astrojs/image/components";
+import { Image } from "astro:assets";
 import { getEntryBySlug } from "astro:content";
 
 const { data } = await getEntryBySlug("contact", "-index");
