@@ -17,7 +17,8 @@
     <img src="https://img.shields.io/github/contributors/statichunt/geeky-astro" alt="contributors"></a>
 </p>
 
-![geeky](https://statichunt.com/themes/astro-geeky.png)
+![geeky](https://statichunt-images.netlify.app/themes/hugo-geeky.png)
+
 
 ## Key Features
 
