@@ -1,10 +1,7 @@
 ---
 import config from "@/config/config.json";
 
-const {
-  theme_switcher,
-  default_theme,
-}: { theme_switcher: boolean; default_theme: string } = config.settings;
+const { theme_switcher }: { theme_switcher: boolean } = config.settings;
 const { className }: { className?: string } = Astro.props;
 ---
 
@@ -21,8 +18,7 @@ const { className }: { className?: string } = Astro.props;
           stroke-linecap="round"
           strokel-inejoin="round"
           fill="none"
-          stroke="#000"
-        >
+          stroke="#000">
           <mask id="m">
             <circle class="masker" cx="7.5" cy="7.5" r="8.5" fill="#fff" />
           </mask>
@@ -48,7 +44,7 @@ const { className }: { className?: string } = Astro.props;
   const matchMedia = window.matchMedia("(prefers-color-scheme: dark)");
 
   matchMedia.addEventListener("change", () =>
-    toggleTheme(document.querySelectorAll("[data-theme-switcher]")),
+    toggleTheme(document.querySelectorAll("[data-theme-switcher]"))
   );
 
   function toggleTheme(themeSwitch: NodeListOf<Element>) {

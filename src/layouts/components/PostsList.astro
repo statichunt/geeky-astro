@@ -1,0 +1,18 @@
+---
+import Post from "@/layouts/components/post.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+
+const posts = await getSinglePage("posts");
+const sortedPosts = sortByDate(posts);
+---
+
+<div class="row">
+  {
+    sortedPosts.map((post) => (
+      <div class="col-12 mb-4 sm:col-6">
+        <Post {...post} />
+      </div>
+    ))
+  }
+</div>

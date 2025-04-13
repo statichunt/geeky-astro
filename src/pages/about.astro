@@ -1,16 +1,17 @@
 ---
 import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
-import type { AboutPage } from "@/types";
 import { Image } from "astro:assets";
-import { getEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getEntry, render } from "astro:content";
 
-const { data, render } = await getEntry("about", "-index");
-const { Content } = await render();
-const { title, image, education, experience } = data as AboutPage;
+const about = (await getEntry("about", "-index")) as CollectionEntry<"about">;
+const { Content } = await render(about);
+const { title, image, education, experience, description, meta_title } =
+  about.data;
 ---
 
-<Base {...data}>
+<Base title={title} meta_title={meta_title} description={description}>
   <section class="section mt-16">
     <div class="container text-center">
       {
@@ -20,7 +21,7 @@ const { title, image, education, experience } = data as AboutPage;
               src={image}
               width={1298}
               height={616}
-              alt={title}
+              alt={title || ""}
               class="rounded-lg"
               format="webp"
             />
@@ -30,7 +31,7 @@ const { title, image, education, experience } = data as AboutPage;
 
       <h1
         class="h1 text-left lg:text-[55px] mt-12"
-        set:html={markdownify(title)}
+        set:html={markdownify(title || "")}
       />
 
       <div class="content text-left">
@@ -40,16 +41,15 @@ const { title, image, education, experience } = data as AboutPage;
       <div class="row mt-24 text-left lg:flex-nowrap">
         <div class="lg:col-6">
           <div
-            class="rounded border border-border p-6 dark:border-darkmode-border"
-          >
+            class="rounded border border-border p-6 dark:border-darkmode-border">
             <h2
               class="section-title mb-12"
-              set:html={markdownify(education.title)}
+              set:html={markdownify(education.title || "")}
             />
 
             <div class="row">
               {
-                education.degrees.map((degree, index) => (
+                education.degrees.map((degree) => (
                   <div class="mb-7 md:col-6">
                     <h4 class="text-base lg:text-[25px]">
                       {degree.university}
@@ -63,15 +63,14 @@ const { title, image, education, experience } = data as AboutPage;
         </div>
         <div class="experience mt-10 lg:mt-0 lg:col-6">
           <div
-            class="rounded border border-border p-6 dark:border-darkmode-border"
-          >
+            class="rounded border border-border p-6 dark:border-darkmode-border">
             <h2
               class="section-title mb-12"
-              set:html={markdownify(experience.title)}
+              set:html={markdownify(experience.title || "")}
             />
             <ul class="row">
               {
-                experience?.list?.map((item, index) => (
+                experience?.list?.map((item) => (
                   <li class="mb-5 text-lg font-bold text-dark dark:text-darkmode-light lg:col-6">
                     {item}
                   </li>

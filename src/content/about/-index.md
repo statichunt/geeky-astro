@@ -1,6 +1,7 @@
 ---
 title: About The Author
 image: /images/author.png
+meta_title: ""
 description: "meta description"
 education:
   title: Formal Education

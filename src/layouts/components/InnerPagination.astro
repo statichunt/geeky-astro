@@ -1,18 +1,17 @@
 ---
-import { getCollection } from "astro:content";
+import { getSinglePage } from "@/lib/contentParser.astro";
 
-const posts = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
-);
+const posts = await getSinglePage("posts");
+
 const currentPostIndex = posts.findIndex(
-  (post) => post.slug === Astro.params.single,
+  (post) => post.id === Astro.params.single
 );
+
 const lastIndex = posts.length - 1;
-const next =
-  currentPostIndex == 0 ? undefined : posts[currentPostIndex - 1].slug;
 const prev =
-  currentPostIndex == lastIndex ? undefined : posts[currentPostIndex + 1].slug;
+  currentPostIndex == 0 ? undefined : posts[currentPostIndex - 1]?.id;
+const next =
+  currentPostIndex == lastIndex ? undefined : posts[currentPostIndex + 1]?.id;
 ---
 
 <div class="row">

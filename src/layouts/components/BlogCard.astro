@@ -23,7 +23,7 @@ const { title, image, author, categories } = data.data;
     )
   }
   <h4 class="mb-3">
-    <a href={`/${post_folder}/${data.slug}`}>
+    <a href={`/${post_folder}/${data.id}`}>
       {title}
     </a>
   </h4>
@@ -47,10 +47,7 @@ const { title, image, author, categories } = data.data;
     </li>
   </ul>
   <p class="mb-6">{plainify(data.body?.slice(0, Number(summary_length)))}</p>
-  <a
-    class="btn btn-outline-primary btn-sm"
-    href={`/${post_folder}/${data.slug}`}
-  >
+  <a class="btn btn-outline-primary btn-sm" href={`/${post_folder}/${data.id}`}>
     read more
   </a>
 </div>

@@ -8,17 +8,19 @@ import dateFormat from "@/lib/utils/dateFormat";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
-import type { HomePage } from "@/types";
 import { Image } from "astro:assets";
 import { type CollectionEntry, getCollection, getEntry } from "astro:content";
 const { post_folder, pagination } = settings;
 
-const homepage = await getEntry("homepage", "-index");
-const { banner, featured_posts, promotion, recent_posts } =
-  homepage.data as HomePage;
+const homepage = (await getEntry(
+  "homepage",
+  "-index"
+)) as CollectionEntry<"homepage">;
+
+const { banner, featured_posts, promotion, recent_posts } = homepage.data;
 const posts = await getCollection(
   "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
+  ({ data, id }) => !id.startsWith("-") && !data.draft
 );
 const sortedPost: CollectionEntry<"posts">[] = sortByDate(posts);
 const featuredPosts = posts.filter((post) => post.data.featured);
@@ -38,13 +40,11 @@ const featuredPosts = posts.filter((post) => post.data.featured);
 
     <div class="container">
       <div
-        class="row flex-wrap-reverse items-center justify-center lg:flex-row"
-      >
+        class="row flex-wrap-reverse items-center justify-center lg:flex-row">
         <div
           class={banner.image_enable
             ? "mt-12 text-center lg:mt-0 lg:text-left lg:col-6"
-            : "mt-12 text-center lg:mt-0 lg:text-left lg:col-12"}
-        >
+            : "mt-12 text-center lg:mt-0 lg:text-left lg:col-12"}>
           <div class="banner-title">
             <h1 set:html={markdownify(banner.title)} />
             <span set:html={markdownify(banner.title_small)} />
@@ -105,7 +105,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                                 <Image
                                   class="mr-3 h-[85px] rounded object-cover"
                                   src={image}
-                                  alt={title}
+                                  alt={title || "Post Image"}
                                   width={105}
                                   height={85}
                                   format="webp"
@@ -114,9 +114,8 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                               <div>
                                 <h3 class="h5 mb-2">
                                   <a
-                                    href={`/${post_folder}/${post.slug}`}
-                                    class="block hover:text-primary"
-                                  >
+                                    href={`/${post_folder}/${post.id}`}
+                                    class="block hover:text-primary">
                                     {title}
                                   </a>
                                 </h3>

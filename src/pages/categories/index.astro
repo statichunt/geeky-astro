@@ -9,12 +9,12 @@ import { getCollection } from "astro:content";
 const { post_folder } = config.settings;
 const posts = await getCollection(
   "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
+  ({ data, id }) => !id.startsWith("-") && !data.draft
 );
 const categories = await getTaxonomy(post_folder, "categories");
 const categoriesWithPostsCount = categories.map((category) => {
   const filteredPosts = posts.filter((post) =>
-    post.data.categories?.includes(category),
+    post.data.categories?.includes(category)
   );
   return {
     name: category,
@@ -33,12 +33,11 @@ const categoriesWithPostsCount = categories.map((category) => {
     <div class="container pt-12 text-center">
       <ul class="row">
         {
-          categoriesWithPostsCount.map((category, i) => (
+          categoriesWithPostsCount.map((category) => (
             <li class="mt-4 block lg:col-4 xl:col-3">
               <a
                 href={`/categories/${category.name}`}
-                class="flex w-full items-center justify-center rounded-lg bg-theme-light px-4 py-4 font-bold text-dark transition hover:bg-primary hover:text-white  dark:bg-darkmode-theme-dark dark:text-darkmode-light dark:hover:bg-primary dark:hover:text-white"
-              >
+                class="flex w-full items-center justify-center rounded-lg bg-theme-light px-4 py-4 font-bold text-dark transition hover:bg-primary hover:text-white  dark:bg-darkmode-theme-dark dark:text-darkmode-light dark:hover:bg-primary dark:hover:text-white">
                 <DynamicIcon icon="FaFolder" className="mr-1.5" />
                 {humanize(category.name)} ({category.posts})
               </a>

@@ -21,12 +21,12 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const posts = await getCollection(
   "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
+  ({ data, id }) => !id.startsWith("-") && !data.draft
 );
 const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
   posts,
   "categories",
-  category!,
+  category!
 );
 ---
 
@@ -42,10 +42,9 @@ const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
       <div class="row">
         <div class="lg:col-8">
           <div
-            class="row rounded border border-border p-4 px-3 dark:border-darkmode-border lg:p-6"
-          >
+            class="row rounded border border-border p-4 px-3 dark:border-darkmode-border lg:p-6">
             {
-              filterByCategories.map((post, i) => (
+              filterByCategories.map((post) => (
                 <div class="col-12 mb-8 sm:col-6">
                   <Post {...post} />
                 </div>

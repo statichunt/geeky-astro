@@ -3,7 +3,7 @@ import { humanize, plainify, slugify } from "@/lib/utils/textConverter";
 import type { CollectionEntry } from "astro:content";
 import Fuse from "fuse.js";
 import React, { useEffect, useRef, useState } from "react";
-import { FaRegFolder, FaRegUserCircle, FaSearch } from "react-icons/fa";
+import { FaRegFolder, FaSearch } from "react-icons/fa";
 
 const { summary_length, post_folder } = config.settings;
 
@@ -23,7 +23,6 @@ interface SearchResult {
 }
 
 const Search = ({ searchList }: Props) => {
-  const { meta_author } = config.metadata;
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputVal, setInputVal] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -111,7 +110,7 @@ const Search = ({ searchList }: Props) => {
             </div>
           ) : (
             searchResults?.map(({ item }, index) => {
-              const { image, title, author, categories } = item.data;
+              const { image, categories } = item.data;
               return (
                 <div
                   className="mb-12 md:col-6 lg:col-4"
@@ -133,14 +132,6 @@ const Search = ({ searchList }: Props) => {
                       </a>
                     </h4>
                     <ul className="mb-4">
-                      <li className="mr-4 inline-block">
-                        <a href={`/authors/${slugify(author!)}`}>
-                          <FaRegUserCircle
-                            className={"-mt-1 mr-2 inline-block"}
-                          />
-                          {humanize(author ?? meta_author)}
-                        </a>
-                      </li>
                       <li className="mr-4 inline-block">
                         <FaRegFolder className={"-mt-1 mr-2 inline-block"} />
                         {categories?.map((category: any, index: number) => (

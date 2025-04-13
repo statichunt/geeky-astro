@@ -1,16 +1,16 @@
-// similer products
-const similerItems = (currentItem: any, allItems: any, slug: string) => {
+// similar products
+const similarItems = (currentItem: any, allItems: any[]) => {
   let categories: string[] = [];
   let tags: string[] = [];
 
   // set categories
-  if (currentItem.data.categories?.length > 0) {
+  if (currentItem.data.categories.length > 0) {
     categories = currentItem.data.categories;
   }
 
   // set tags
-  if (currentItem.data.tags?.length > 0) {
-    tags = currentItem.data.tags;
+  if (currentItem.data?.tags?.length > 0) {
+    tags = currentItem.data?.tags;
   }
 
   // filter by categories
@@ -20,16 +20,18 @@ const similerItems = (currentItem: any, allItems: any, slug: string) => {
 
   // filter by tags
   const filterByTags = allItems.filter((item: any) =>
-    tags.find((tag) => item.data.tags.includes(tag)),
+    tags.find((tag) => item.data?.tags?.includes(tag)),
   );
 
   // merged after filter
   const mergedItems = [...new Set([...filterByCategories, ...filterByTags])];
 
   // filter by slug
-  const filterBySlug = mergedItems.filter((product) => product.slug !== slug);
+  const filterBySlug = mergedItems.filter(
+    (product) => product.id !== currentItem.id,
+  );
 
   return filterBySlug;
 };
 
-export default similerItems;
+export default similarItems;

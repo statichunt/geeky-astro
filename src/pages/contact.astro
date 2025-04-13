@@ -3,16 +3,20 @@ import config from "@/config/config.json";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
-import type { ContactPage } from "@/types/index";
 import { Image } from "astro:assets";
-import { getEntryBySlug } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
 
-const { data } = await getEntryBySlug("contact", "-index");
+const contact = (await getEntry(
+  "contact",
+  "-index"
+)) as CollectionEntry<"contact">;
+
 const { contact_form_action }: { contact_form_action: string } = config.params;
-const { title, social_links } = data as ContactPage;
+const { title, social_links, meta_title, description } = contact.data;
 ---
 
-<Base {...data}>
+<Base title={title} meta_title={meta_title} description={description}>
   <section class="section lg:mt-16">
     <div class="container">
       <div class="row relative pb-16">
@@ -27,12 +31,11 @@ const { title, social_links } = data as ContactPage;
         <div class="lg:col-6">
           <h1
             class="my-10 lg:my-11 lg:pt-11 text-center lg:text-left lg:text-[64px]"
-            set:html={markdownify(title)}
+            set:html={markdownify(title || "")}
           />
         </div>
         <div
-          class="contact-form-wrapper rounded border border-border p-6 dark:border-darkmode-border lg:col-6"
-        >
+          class="contact-form-wrapper rounded border border-border p-6 dark:border-darkmode-border lg:col-6">
           <h2>
             Send Us A
             <span class="ml-1.5 inline-flex items-center text-primary">
@@ -43,8 +46,7 @@ const { title, social_links } = data as ContactPage;
           <form
             class="contact-form mt-12"
             method="POST"
-            action={contact_form_action}
-          >
+            action={contact_form_action}>
             <div class="mb-6">
               <label class="mb-2 block font-secondary" for="name">
                 Full name
@@ -104,8 +106,7 @@ const { title, social_links } = data as ContactPage;
             <div class="md:col-6 lg:col-4">
               <span
                 class="my-4 flex h-[100px] items-center justify-center
-             rounded border border-border p-4 text-primary dark:border-darkmode-border"
-              >
+             rounded border border-border p-4 text-primary dark:border-darkmode-border">
                 <DynamicIcon icon={link.icon} />
                 <p class="ml-1.5 text-lg font-bold text-dark dark:text-darkmode-light">
                   {link.content}

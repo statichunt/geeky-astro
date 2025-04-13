@@ -1,49 +1,44 @@
 ---
 import InnerPagination from "@/components/InnerPagination.astro";
 import Post from "@/components/post.astro";
-import { disqus, metadata, settings } from "@/config/config.json";
+import { disqus, settings } from "@/config/config.json";
 import Disqus from "@/helpers/Disqus";
 import DynamicIcon from "@/helpers/DynamicIcon";
 import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
-import similerItems from "@/lib/utils/similarItems";
+import similarItems from "@/lib/utils/similarItems";
 import { markdownify } from "@/lib/utils/textConverter";
 import Sidebar from "@/partials/Sidebar.astro";
 import { Image } from "astro:assets";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry, render } from "astro:content";
 const { post_folder, InnerPaginationOptions } = settings;
 
-type Props = CollectionEntry<"posts">;
+type Props = {
+  post: CollectionEntry<"posts">;
+};
 
 export async function getStaticPaths() {
-  const posts = await getCollection(
-    "posts",
-    ({ data, id }) => !id.startsWith("-") && !data.draft,
-  );
-
-  const paths = posts.map((post) => ({
+  const allPosts = await getSinglePage("posts");
+  const paths = allPosts.map((post) => ({
     params: {
-      single: post.slug,
+      single: (post as any).id,
     },
-    props: { ...post },
+    props: { post },
   }));
-
   return paths;
 }
 
-const { data, render, slug } = Astro.props;
-const { title, image, author, date } = data;
-const { Content } = await render();
+const { post } = Astro.props;
+const { title, image, date, description, meta_title } = post.data;
+const { Content } = await render(post);
 const categories = await getTaxonomy(post_folder, "categories");
-const postEntries = await getCollection(
-  "posts",
-  ({ data, id }) => !id.startsWith("-") && !data.draft,
-);
-const relatedPosts = similerItems(Astro.props, postEntries, slug);
+const postEntries = await getSinglePage("posts");
+const relatedPosts = similarItems(post, postEntries);
 ---
 
-<Base {...data}>
+<Base title={title} description={description} meta_title={meta_title}>
   <section class="section single-blog mt-6">
     <div class="container">
       <div class="row">
@@ -56,7 +51,7 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
                     src={image}
                     height={500}
                     width={1000}
-                    alt={title}
+                    alt={title ?? ""}
                     class="rounded-lg"
                     format="webp"
                   />
@@ -64,13 +59,12 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
               }
               <ul class="absolute top-3 left-2 flex flex-wrap items-center">
                 {
-                  categories.map((tag, index) => (
+                  categories.map((tag) => (
                     <li class="m-2 inline-flex h-7 rounded-[35px] bg-primary px-3 text-white">
                       <a
                         aria-label="categories"
                         class="capitalize"
-                        href={`/categories/${tag.replace(" ", "-")}`}
-                      >
+                        href={`/categories/${tag.replace(" ", "-")}`}>
                         {tag}
                       </a>
                     </li>
@@ -86,20 +80,13 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
               )
             }
 
-            <h1 class="lg:text-[42px] mt-4" set:text={markdownify(title)} />
+            <h1
+              class="lg:text-[42px] mt-4"
+              set:text={markdownify(title ?? "")}
+            />
             <ul class="flex items-center space-x-4">
-              <li>
-                <a
-                  class="inline-flex items-center font-secondary text-xs leading-3"
-                  href="/about"
-                >
-                  <DynamicIcon className="mr-1.5" icon="FaUser" />
-                  {author ?? metadata.meta_author}
-                </a>
-              </li>
               <li
-                class="inline-flex items-center font-secondary text-xs leading-3"
-              >
+                class="inline-flex items-center font-secondary text-xs leading-3">
                 <DynamicIcon icon="FaRegCalendar" className="mr-1.5" />
                 {dateFormat(date!)}
               </li>
@@ -113,7 +100,9 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
             {disqus.enable && <Disqus client:load />}
           </div>
         </div>
-        <Sidebar posts={postEntries.filter((post) => post.slug !== slug)} />
+        <Sidebar
+          posts={postEntries.filter((singlePost) => singlePost.id !== post.id)}
+        />
       </div>
     </div>
 
@@ -122,7 +111,7 @@ const relatedPosts = similerItems(Astro.props, postEntries, slug);
       <h2 class="section-title">Related Posts</h2>
       <div class="row mt-16">
         {
-          relatedPosts.slice(0, 3).map((post, index) => (
+          relatedPosts.slice(0, 3).map((post) => (
             <div class="mb-12 lg:col-4">
               <Post {...post} />
             </div>

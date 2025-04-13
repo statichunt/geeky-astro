@@ -128,7 +128,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 <Image
                   class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
                   src={post.data.image}
-                  alt={post.data.title}
+                  alt={post.data.title || ""}
                   width={105}
                   height={85}
                   format="webp"
@@ -137,7 +137,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
               <div>
                 <h3 class="h5 mb-2">
                   <a
-                    href={`/${post_folder}/${post.slug}`}
+                    href={`/${post_folder}/${post.id}`}
                     class="block hover:text-primary"
                   >
                     {post.data.title}
@@ -166,7 +166,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                   <Image
                     class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
                     src={post.data.image}
-                    alt={post.data.title}
+                    alt={post.data.title || ""}
                     width={105}
                     height={85}
                     format="webp"
@@ -175,7 +175,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 <div>
                   <h3 class="h5 mb-2">
                     <a
-                      href={`/${post_folder}/${post.slug}`}
+                      href={`/${post_folder}/${post.id}`}
                       class="block hover:text-primary"
                     >
                       {post.data.title}

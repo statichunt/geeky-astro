@@ -1,10 +1,55 @@
 ---
-import { getCollection } from "astro:content";
+import {
+  getCollection,
+  type CollectionEntry,
+  type CollectionKey,
+} from "astro:content";
 
-export const getSinglePage = async (collection: any) => {
-  const allPage = await getCollection(collection);
-  const removeIndex = allPage.filter((data) => data.id.match(/^(?!-)/));
-  const removeDrafts = removeIndex.filter((data) => !data.data.draft);
-  return removeDrafts;
+type PageData = {
+  title: string;
+  meta_title?: string;
+  description?: string;
+  image?: string;
+  draft?: boolean;
+  weight?: number; // Add weight property
+};
+
+export const getSinglePage = async <C extends CollectionKey>(
+  collectionName: C
+): Promise<CollectionEntry<C>[]> => {
+  const allPages = await getCollection(collectionName);
+
+  const removeIndex = allPages.filter((data) => data.id.match(/^(?!-)/));
+
+  const removeDrafts = removeIndex.filter((data) => {
+    const pageData = data.data as PageData;
+    return pageData.draft !== true;
+  });
+
+  // Sort pages
+  const sortedPages = removeDrafts.sort((a, b) => {
+    const aData = a.data as PageData;
+    const bData = b.data as PageData;
+
+    // Prioritize by weight if present
+    const aWeight = aData.weight ?? null;
+    const bWeight = bData.weight ?? null;
+    if (aWeight !== null && bWeight !== null) {
+      return aWeight - bWeight;
+    }
+    if (aWeight !== null) return -1;
+    if (bWeight !== null) return 1;
+
+    // Put -index at the top
+    if (a.id.endsWith("-index")) return -1;
+    if (b.id.endsWith("-index")) return 1;
+
+    // For other posts, sort by their numeric part
+    const aNum = parseInt(a.id.match(/\d+/)?.[0] || "0");
+    const bNum = parseInt(b.id.match(/\d+/)?.[0] || "0");
+    return aNum - bNum;
+  });
+
+  return sortedPages;
 };
 ---
