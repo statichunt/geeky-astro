@@ -68,7 +68,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
         <ul>
           {categoriesWithPostsCount.map((category, i) => (
             <li
-              class={`relative mb-2 flex items-center justify-between pl-6 text-[16px] font-bold capitalize text-dark dark:text-darkmode-light ${
+              class={`relative mb-2 flex items-center justify-between pl-6 text-[16px] font-bold capitalize text-text-dark dark:text-darkmode-text-light ${
                 i !== catagories.length - 1 &&
                 "border-b border-border  dark:border-darkmode-border"
               }`}
@@ -159,7 +159,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
               <div
                 class={`flex items-center pb-6 ${
                   i !== arr.length - 1 &&
-                  "mb-6 border-b dark:border-b-darkmode-border"
+                  "mb-6 border-b border-border dark:border-b-text-darkmode-border"
                 }`}
               >
                 {post.data.image && (
@@ -202,7 +202,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
         <form action="#" class="py-6">
           <fieldset class="relative">
             <input
-              class="newsletter-input form-input h-12 w-full rounded-3xl border-none bg-theme-light px-5 py-3 pr-12 text-dark placeholder:text-xs dark:bg-darkmode-theme-dark"
+              class="newsletter-input form-input h-12 w-full rounded-3xl border-none bg-light! px-5! py-3! pr-12! text-text-dark placeholder:text-xs dark:bg-darkmode-dark!"
               type="text"
               placeholder="Type And Hit Enter"
             />

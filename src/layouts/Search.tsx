@@ -71,7 +71,7 @@ const Search = ({ searchList }: Props) => {
           <div className="lg:col-8">
             <div className="flex flex-nowrap">
               <input
-                className="form-input p-4 rounded-l-lg bg-theme-light dark:bg-theme-dark w-full"
+                className="form-input p-4! rounded-l-lg bg-light! dark:bg-dark! w-full"
                 placeholder="Search posts"
                 type="search"
                 name="search"

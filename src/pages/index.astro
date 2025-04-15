@@ -94,7 +94,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                     <div class="md:col-6">
                       <Post {...featuredPosts[0]} />
                     </div>
-                    <div class="scrollbar-w-[10px] mt-8 max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-darkmode-theme-dark overflow-y-auto md:mt-0 md:col-6">
+                    <div class="scrollbar-w-[10px] mt-8 max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-text-darkmode-dark overflow-y-auto md:mt-0 md:col-6">
                       {featuredPosts
                         .slice(1, featuredPosts.length)
                         .map((post) => {

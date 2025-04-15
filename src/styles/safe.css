@@ -1,0 +1,22 @@
+/* navbar toggler */
+input#nav-toggle:checked + div #show-button {
+  @apply hidden;
+}
+input#nav-toggle:checked + div #hide-button {
+  @apply block;
+}
+input#nav-toggle:checked + div .navbar-nav {
+  @apply translate-x-0;
+}
+input#nav-toggle:checked + div .backdrop {
+  @apply opacity-100 visible;
+}
+
+/* form style */
+.form-inputs * {
+  @apply mb-5 leading-10;
+}
+.form-input,
+.form-textarea {
+  @apply border-0 border-b border-border bg-transparent px-0 placeholder:text-xs placeholder:text-text-light  focus:border-primary focus:ring-transparent dark:border-darkmode-border dark:text-darkmode-text-light dark:placeholder:text-darkmode-text-light/20;
+}
