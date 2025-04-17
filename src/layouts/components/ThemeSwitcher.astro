@@ -16,7 +16,7 @@ const { className }: { className?: string } = Astro.props;
           width="20"
           height="20"
           stroke-linecap="round"
-          strokel-inejoin="round"
+          stroke-linejoin="round"
           fill="none"
           stroke="#000">
           <mask id="m">
@@ -29,7 +29,7 @@ const { className }: { className?: string } = Astro.props;
             />
           </g>
           <path
-            class="moon"
+            class="moon hidden"
             fill="white"
             d="M1.66 11.362A6.5 6.5 0 007.693.502a7 7 0 11-6.031 10.86z"
           />
@@ -58,6 +58,14 @@ const { className }: { className?: string } = Astro.props;
     const isDarkTheme = currentTheme === "dark";
     themeSwitch.forEach((sw: any) => (sw.checked = isDarkTheme));
     document.documentElement.classList.toggle("dark", isDarkTheme);
+
+    // Toggle visibility of moon and sun icons
+    document.querySelectorAll(".moon").forEach((moon) => {
+      moon.classList.toggle("hidden", isDarkTheme); // Show moon in light mode
+    });
+    document.querySelectorAll(".sun").forEach((sun) => {
+      sun.classList.toggle("hidden", !isDarkTheme); // Show sun in dark mode
+    });
   }
 
   const setDarkMode = () => {

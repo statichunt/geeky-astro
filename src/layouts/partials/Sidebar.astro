@@ -13,17 +13,19 @@ import type { CollectionEntry } from "astro:content";
 
 type Props = {
   posts: CollectionEntry<"posts">[];
-  className?: string
+  className?: string;
 };
 
 const { post_folder } = settings;
 const { about, categories, featured_posts, newsletter } = widgets;
 const { posts, className } = Astro.props;
 const catagories = await getTaxonomy("posts", "categories");
-const featuredPosts: CollectionEntry<"posts">[] = sortByDate(posts).filter((post) => post.data.featured);
+const featuredPosts: CollectionEntry<"posts">[] = sortByDate(posts).filter(
+  (post) => post.data.featured
+);
 const categoriesWithPostsCount = catagories.map((category) => {
   const filteredPosts = posts.filter((post) =>
-    post.data.categories?.includes(category),
+    post.data.categories?.includes(category)
   );
   return {
     name: category,
@@ -32,12 +34,11 @@ const categoriesWithPostsCount = catagories.map((category) => {
 });
 ---
 
-<aside class={`${className} px-0 lg:px-6 lg:col-4`}>
+<aside class={`${className} lg:col-4`}>
   {
     about.enable && (
       <div class="relative rounded border border-border p-6 text-center dark:border-darkmode-border">
         <Image
-           
           width={377}
           height={273}
           style={{ objectFit: "contain" }}
@@ -45,6 +46,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
           src="/images/map.png"
           alt="bg-map"
           format="webp"
+          loading="eager"
         />
         <Logo />
 
@@ -71,16 +73,14 @@ const categoriesWithPostsCount = catagories.map((category) => {
               class={`relative mb-2 flex items-center justify-between pl-6 text-[16px] font-bold capitalize text-text-dark dark:text-darkmode-text-light ${
                 i !== catagories.length - 1 &&
                 "border-b border-border  dark:border-darkmode-border"
-              }`}
-            >
+              }`}>
               <svg
                 class="absolute left-0 top-2.5"
                 width="20px"
                 height="20px"
                 viewBox="0 0 20 20"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
+                xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M11.7318 9.35984C12.0854 8.93556 12.7159 8.87824 13.1402 9.2318C13.5645 9.58537 13.6218 10.2159 13.2682 10.6402L8.26825 16.6402C7.91468 17.0645 7.28412 17.1218 6.85984 16.7682C6.43556 16.4147 6.37824 15.7841 6.7318 15.3598L11.7318 9.35984Z"
                   fill="#2ba283"
@@ -92,7 +92,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
               </svg>
               <a class="py-2" href={`/categories/${slugify(category.name)}`}>
                 {slugify(category.name)}
-                <span class="absolute right-0 top-1/2 -translate-y-1/2 text-[10px] text-gray-500">
+                <span class="absolute right-0 top-1/2 -translate-y-1/2 text-gray-500">
                   {category.posts}
                 </span>
               </a>
@@ -109,21 +109,28 @@ const categoriesWithPostsCount = catagories.map((category) => {
       <div class="mt-6 rounded border border-border p-6 dark:border-darkmode-border">
         <h4 class="section-title mb-12 text-center">Featured</h4>
         <div class="mb-12 flex items-center justify-center">
-          <button tab-button tab-target="featured-tab" class={`btn px-5 py-2  btn-primary`}>Featured</button>
-          <button tab-button tab-target="recent-tab " class={`btn ml-3  px-5 py-2 btn-outline-primary`}>
+          <button
+            tab-button
+            tab-target="featured-tab"
+            class={`btn px-5 py-2  btn-primary`}>
+            Featured
+          </button>
+          <button
+            tab-button
+            tab-target="recent-tab "
+            class={`btn ml-3  px-5 py-2 btn-outline-primary`}>
             Recent
           </button>
         </div>
 
-        <!---Recent post -->
+        {/* Recent post */}
         <div class="recent-tab hidden">
           {posts.slice(0, featured_posts.showPost).map((post, i, arr) => (
             <div
               class={`flex items-center ${
                 i !== arr.length - 1 &&
                 "mb-6 border-b border-border pb-6 dark:border-darkmode-border"
-              }`}
-            >
+              }`}>
               {post.data.image && (
                 <Image
                   class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
@@ -138,8 +145,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 <h3 class="h5 mb-2">
                   <a
                     href={`/${post_folder}/${post.id}`}
-                    class="block hover:text-primary"
-                  >
+                    class="block hover:text-primary">
                     {post.data.title}
                   </a>
                 </h3>
@@ -151,7 +157,8 @@ const categoriesWithPostsCount = catagories.map((category) => {
             </div>
           ))}
         </div>
-        <!----Featured -->
+
+        {/* Featured  */}
         <div class="featured-tab block">
           {featuredPosts
             .slice(0, featured_posts.showPost)
@@ -160,8 +167,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                 class={`flex items-center pb-6 ${
                   i !== arr.length - 1 &&
                   "mb-6 border-b border-border dark:border-b-text-darkmode-border"
-                }`}
-              >
+                }`}>
                 {post.data.image && (
                   <Image
                     class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
@@ -176,8 +182,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                   <h3 class="h5 mb-2">
                     <a
                       href={`/${post_folder}/${post.id}`}
-                      class="block hover:text-primary"
-                    >
+                      class="block hover:text-primary">
                       {post.data.title}
                     </a>
                   </h3>
@@ -218,7 +223,9 @@ const categoriesWithPostsCount = catagories.map((category) => {
 
         <p class="text-[13px] font-medium text-prirmary">
           By Singing Up, You Agree To
-          <a href={newsletter.privacy_policy_page} class="ml-1">
+          <a
+            href={newsletter.privacy_policy_page}
+            class="ml-1 underline decoration-wavy">
             Privacy Policy
           </a>
         </p>
@@ -227,27 +234,28 @@ const categoriesWithPostsCount = catagories.map((category) => {
   }
 </aside>
 
-
 <script>
-    // astro:page-load event is fired when the page is loaded
-    document.addEventListener("astro:page-load", () => {
-  const tabButtons = document.querySelectorAll("[tab-button]") as NodeListOf<HTMLButtonElement>;
-  tabButtons.forEach(button => {
-    button.addEventListener("click", function(){
-      tabButtons.forEach(button => {
-      if(button == this)  return;
-        button.classList.add("btn-outline-primary");
-        button.classList.remove("btn-primary");
-        const target = button.getAttribute("tab-target");
-        document.querySelector( "."  + target)?.classList.remove("block");
-        document.querySelector( "."  + target)?.classList.add("hidden");
+  // astro:page-load event is fired when the page is loaded
+  document.addEventListener("astro:page-load", () => {
+    const tabButtons = document.querySelectorAll(
+      "[tab-button]"
+    ) as NodeListOf<HTMLButtonElement>;
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        tabButtons.forEach((button) => {
+          if (button == this) return;
+          button.classList.add("btn-outline-primary");
+          button.classList.remove("btn-primary");
+          const target = button.getAttribute("tab-target");
+          document.querySelector("." + target)?.classList.remove("block");
+          document.querySelector("." + target)?.classList.add("hidden");
+        });
+        const target = this.getAttribute("tab-target");
+        this.classList.remove("btn-outline-primary");
+        this.classList.add("btn-primary");
+        document.querySelector("." + target)?.classList.remove("hidden");
+        document.querySelector("." + target)?.classList.add("block");
       });
-      const target = this.getAttribute("tab-target");
-      this.classList.remove("btn-outline-primary");
-      this.classList.add("btn-primary");
-      document.querySelector( "."  + target)?.classList.remove("hidden");
-      document.querySelector( "."  + target)?.classList.add("block");
-    })
-  })
     });
+  });
 </script>

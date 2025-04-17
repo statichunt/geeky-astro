@@ -162,16 +162,11 @@ footer .socials {
 
 /* experience */
 .experience {
-  ul li {
-    @apply relative pl-7!;
-  }
-  ul li::before {
-    @apply absolute left-1 top-2.5 h-[9px] w-[9px] rounded-full border-2 bg-primary content-[''];
-    box-shadow: 0px 0px 0px 2px var(--color-primary);
-  }
-
-  ul li {
-    @apply before:border-body dark:before:border-darkmode-body;
+  ul {
+    @apply list-inside list-disc;
+    li {
+      @apply marker:text-text/20 dark:marker:text-darkmode-text-light;
+    }
   }
 }
 

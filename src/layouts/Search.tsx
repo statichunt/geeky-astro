@@ -71,7 +71,7 @@ const Search = ({ searchList }: Props) => {
           <div className="lg:col-8">
             <div className="flex flex-nowrap">
               <input
-                className="form-input p-4! rounded-l-lg bg-light! dark:bg-dark! w-full"
+                className="form-input border! border-r-0! p-4! rounded-l-lg bg-light! dark:bg-dark! w-full"
                 placeholder="Search posts"
                 type="search"
                 name="search"
@@ -82,7 +82,7 @@ const Search = ({ searchList }: Props) => {
                 ref={inputRef}
               />
               <button
-                className="btn btn-primary rounded-r-lg rounded-l-none h-full py-[21px]"
+                className="btn btn-primary before:hidden rounded-r-lg rounded-l-none h-full py-[21px]"
                 type="submit"
               >
                 <FaSearch />

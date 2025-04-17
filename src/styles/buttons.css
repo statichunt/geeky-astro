@@ -1,5 +1,5 @@
 .btn {
-  @apply font-secondary inline-block border px-5 py-2.5 font-bold transition;
+  @apply font-secondary inline-block border px-5 py-2.5 font-bold transition cursor-pointer;
 }
 
 .btn-primary {

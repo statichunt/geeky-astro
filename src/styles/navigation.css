@@ -46,11 +46,11 @@ body.menu-open {
 }
 
 .nav-dropdown-list {
-  @apply z-10 rounded-lg  border border-transparent bg-body p-4 shadow dark:border-darkmode-border dark:bg-black;
+  @apply z-10 rounded-lg border border-transparent bg-body p-2 w-fit shadow dark:border-darkmode-border dark:bg-black;
 }
 
 .nav-dropdown-item {
-  @apply mb-1.5;
+  @apply mb-1.5 last:mb-0;
 }
 
 .nav-dropdown-link {

@@ -36,6 +36,7 @@ const featuredPosts = posts.filter((post) => post.data.featured);
       height={351}
       style={{ objectFit: "contain" }}
       alt="banner-shape"
+      loading={"eager"}
     />
 
     <div class="container">
@@ -67,7 +68,8 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                 width={548}
                 height={443}
                 format="webp"
-                alt="Banner Image"
+                alt="Banner"
+                loading="eager"
               />
             </div>
           )
@@ -94,21 +96,24 @@ const featuredPosts = posts.filter((post) => post.data.featured);
                     <div class="md:col-6">
                       <Post {...featuredPosts[0]} />
                     </div>
-                    <div class="scrollbar-w-[10px] mt-8 max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-text-darkmode-dark overflow-y-auto md:mt-0 md:col-6">
+                    <div class="scrollbar-w-[10px] mt-8 md:max-h-[480px] scrollbar-thin scrollbar-track-gray-100 scrollbar-thumb-border dark:scrollbar-track-gray-800 dark:scrollbar-thumb-text-darkmode-dark overflow-y-auto md:mt-0 md:col-6">
                       {featuredPosts
                         .slice(1, featuredPosts.length)
-                        .map((post) => {
+                        .map((post, index) => {
                           const { image, title, date } = post.data;
                           return (
-                            <div class={`mb-6 flex items-center pb-6`}>
+                            <div
+                              class={`mb-6 flex flex-col sm:flex-row sm:items-center pb-6 last:max-md:pb-0 last:mb-0`}>
+                              {/* Post Image */}
                               {image && (
                                 <Image
-                                  class="mr-3 h-[85px] rounded object-cover"
+                                  class="sm:mr-3 max-sm:mb-2 max-sm:w-full sm:h-[85px] rounded object-cover"
                                   src={image}
                                   alt={title || "Post Image"}
                                   width={105}
                                   height={85}
                                   format="webp"
+                                  loading={index === 0 ? "eager" : "lazy"}
                                 />
                               )}
                               <div>

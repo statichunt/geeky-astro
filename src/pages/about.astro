@@ -12,7 +12,7 @@ const { title, image, education, experience, description, meta_title } =
 ---
 
 <Base title={title} meta_title={meta_title} description={description}>
-  <section class="section mt-16">
+  <section class="section">
     <div class="container text-center">
       {
         image && (
@@ -68,7 +68,7 @@ const { title, image, education, experience, description, meta_title } =
               class="section-title mb-12"
               set:html={markdownify(experience.title || "")}
             />
-            <ul class="row">
+            <ul class="row list-inside list-disc">
               {
                 experience?.list?.map((item) => (
                   <li class="mb-5 text-lg font-bold text-text-dark dark:text-darkmode-text-light lg:col-6">

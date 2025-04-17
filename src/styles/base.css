@@ -32,17 +32,17 @@ h3,
 
 h4,
 .h4 {
-  @apply text-h4;
+  @apply text-h4-sm md:text-h4;
 }
 
 h5,
 .h5 {
-  @apply text-h5;
+  @apply text-h5-sm md:text-h5;
 }
 
 h6,
 .h6 {
-  @apply text-h6;
+  @apply text-h6-sm md:text-h6;
 }
 
 b,

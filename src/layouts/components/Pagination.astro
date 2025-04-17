@@ -29,12 +29,12 @@ const pageList = [...Array(totalPages).keys()].map((i) => i + 1);
           }
           class="flex items-center rounded-full px-2 py-1 text-3xl font-bold leading-none text-text-dark dark:text-darkmode-text-light">
           <DynamicIcon className="w-5 h-5" icon="FaArrowLeft" />
-          <span class="ml-3 text-lg ">Previous</span>
+          <span class="ml-3 text-lg hidden sm:block">Previous</span>
         </a>
       ) : (
         <span class="flex items-center rounded-full px-2 py-1 text-3xl font-bold text-text-dark dark:text-darkmode-text-light ">
           <DynamicIcon className="w-5 h-5" icon="FaArrowLeft" />
-          <span class="ml-3 text-lg">Previous</span>
+          <span class="ml-3 text-lg hidden sm:block">Previous</span>
         </span>
       )}
 
@@ -65,12 +65,12 @@ const pageList = [...Array(totalPages).keys()].map((i) => i + 1);
         <a
           href={`${section ? "/" + section : ""}/page/${currentPage + 1}`}
           class="ml-4 flex items-center rounded-full px-2 py-1 text-3xl font-bold leading-none text-text-dark dark:text-darkmode-text-light">
-          <span class="mr-3 text-lg">Next</span>
+          <span class="mr-3 text-lg hidden sm:block">Next</span>
           <DynamicIcon className="w-5 h-5" icon="FaArrowRight" />
         </a>
       ) : (
         <span class="ml-4 flex items-center rounded-full px-2 py-1 text-3xl font-bold text-text-dark dark:text-darkmode-text-light">
-          <span class="mr-3 text-lg">Next</span>
+          <span class="mr-3 text-lg hidden sm:block">Next</span>
           <DynamicIcon className="w-5 h-5" icon="FaArrowRight" />
         </span>
       )}

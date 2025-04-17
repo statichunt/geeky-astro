@@ -49,12 +49,13 @@ const { pathname } = Astro.url;
                 transform="rotate(45 10 10)"></polygon>
             </svg>
           </label>
+          <div class="block lg:hidden"><Logo /></div>
         </li>
         {
           main.map((menu) => (
             <>
               {menu.hasChildren ? (
-                <li class="nav-item nav-dropdown group relative">
+                <li class="nav-item nav-dropdown group cursor-pointer relative">
                   <span
                     class={`nav-link inline-flex items-center ${
                       menu.children?.map(({ url }) => url).includes(pathname) ||
@@ -69,7 +70,7 @@ const { pathname } = Astro.url;
                       <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                     </svg>
                   </span>
-                  <ul class="nav-dropdown-list transition-all duration-300 group-hover:top-[46px] lg:group-hover:block md:invisible md:absolute md:top-[60px] md:block md:opacity-0 md:group-hover:visible md:group-hover:opacity-100">
+                  <ul class="nav-dropdown-list transition-all duration-300 lg:opacity-0 lg:group-hover:opacity-100 lg:invisible lg:absolute group-hover:top-[46px] lg:block lg:group-hover:visible ">
                     {menu.children?.map((child) => (
                       <li class="nav-dropdown-item">
                         <a
@@ -78,7 +79,8 @@ const { pathname } = Astro.url;
                             (pathname === `${child.url}/` ||
                               pathname === child.url) &&
                             "active"
-                          }`}>
+                          }`}
+                          aria-label="dropdown">
                           {child.name}
                         </a>
                       </li>

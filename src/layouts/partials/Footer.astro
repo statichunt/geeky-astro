@@ -14,9 +14,10 @@ const { copyright, footer_content } = config.params;
   <img
     width={1905}
     height={443}
-    class="-z-[1] object-cover object-left md:object-top absolute inset-0"
-    src="/images/footer-bg-shape.png"
+    class="-z-[1] h-full object-cover object-top absolute inset-0"
+    src="/images/footer-bg-shape.svg"
     alt="footer background"
+    loading="lazy"
   />
   <div class="container text-center">
     <div class="mb-6 inline-flex">
@@ -43,8 +44,11 @@ const { copyright, footer_content } = config.params;
     <div class="inline-flex">
       <Social source={social.main} className="socials mb-12 justify-center" />
     </div>
-    {/* copyright */}
 
-    <p set:html={markdownify(copyright)} />
+    {/* copyright */}
+    <p
+      set:html={markdownify(copyright)}
+      class="[&>a]:underline decoration-wavy"
+    />
   </div>
 </footer>
