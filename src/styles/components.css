@@ -81,12 +81,12 @@
   @apply prose-hr:border-border prose-hr:dark:border-darkmode-border;
   @apply prose-p:text-base prose-p:text-text prose-p:dark:text-darkmode-text-light;
   @apply prose-blockquote:mb-12 prose-blockquote:rounded prose-blockquote:border-0 prose-blockquote:py-1 prose-blockquote:px-12 prose-blockquote:not-italic prose-blockquote:bg-light prose-blockquote:dark:bg-dark prose-blockquote:lg:px-16;
-  @apply prose-code:px-1 prose-code:text-primary;
+  @apply prose-code:px-1 prose-code:text-primary prose-code:dark:text-darkmode-primary;
   @apply prose-pre:rounded;
   @apply prose-img:rounded;
   @apply prose-table:rounded;
   @apply prose-strong:text-text-dark prose-strong:dark:text-darkmode-text-light;
-  @apply prose-a:text-primary prose-a:no-underline prose-a:hover:underline;
+  @apply prose-a:text-primary prose-a:dark:text-darkmode-primary prose-a:no-underline prose-a:hover:underline;
   @apply prose-table:overflow-hidden prose-table:border prose-table:border-border prose-table:dark:border-darkmode-border;
   @apply prose-thead:border-border prose-thead:bg-light prose-th:py-4 prose-th:px-4 prose-th:text-text-dark prose-thead:dark:border-darkmode-border prose-thead:dark:bg-dark prose-th:dark:text-darkmode-text-light;
   @apply prose-tr:border-border prose-tr:dark:border-darkmode-border;
@@ -97,7 +97,7 @@
     @apply relative list-none text-text-dark dark:text-darkmode-text-light;
   }
   ul li::before {
-    @apply absolute -ml-[15px] left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary content-[''];
+    @apply absolute -ml-[15px] left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary dark:bg-darkmode-primary content-[''];
     box-shadow: 0px 0px 0px 2px var(--color-primary);
   }
   ul li {
@@ -134,7 +134,7 @@
     }
 
     strong {
-      @apply text-primary;
+      @apply text-primary dark:text-darkmode-primary;
     }
 
     span {
@@ -145,17 +145,17 @@
 
 /* section-title */
 .section-title {
-  @apply mb-12 underline decoration-(--color-primary) decoration-wavy decoration-2 underline-offset-[.5em];
+  @apply mb-12 underline decoration-(--color-primary) dark:decoration-(--color-darkmode-primary) decoration-wavy decoration-2 underline-offset-[.5em];
 }
 
 /* socials */
 .socials {
-  @apply mx-3 flex items-center justify-center space-x-3 px-4 lg:justify-start lg:border-x lg:border-border 2xl:space-x-4;
+  @apply flex items-center justify-center space-x-3 lg:justify-start lg:border-x lg:border-border 2xl:space-x-4;
   li {
     @apply inline-flex;
   }
   a {
-    @apply inline-block px-2 py-1 text-lg text-text-dark  hover:text-primary dark:text-darkmode-text-light dark:hover:text-primary;
+    @apply inline-block px-3 py-1 text-lg text-text-dark hover:text-primary dark:text-darkmode-text-light dark:hover:text-darkmode-primary;
   }
 }
 
@@ -174,7 +174,7 @@ footer .socials {
     @apply relative pl-5!;
   }
   li span::before {
-    @apply absolute left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary content-[''];
+    @apply absolute left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary dark:bg-darkmode-primary content-[''];
     box-shadow: 0px 0px 0px 2px var(--color-primary);
   }
 

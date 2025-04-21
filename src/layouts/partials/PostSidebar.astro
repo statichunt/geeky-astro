@@ -16,9 +16,9 @@ const { tags, categories, allCategories } = Astro.props;
               (c: any) => c === category
             ).length;
             return (
-              <li>
+              <li class="bg-red-500">
                 <a
-                  class="flex justify-between hover:text-primary dark:hover:text-text-darkmode-primary"
+                  class="flex justify-between hover:text-primary hover:dark:text-darkmode-primary"
                   href={`/categories/${category}`}>
                   {humanize(category)} <span>({count})</span>
                 </a>

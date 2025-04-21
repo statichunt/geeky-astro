@@ -57,7 +57,7 @@ body.menu-open {
   @apply min-w-[150px] rounded py-2.5 px-3.5 text-base font-semibold  text-text-dark transition hover:bg-primary/10 hover:text-primary dark:text-darkmode-text-light;
 }
 .nav-dropdown-link.active {
-  @apply bg-primary/10 text-primary;
+  @apply bg-primary/10 text-primary dark:text-darkmode-primary;
 }
 
 /* search style */

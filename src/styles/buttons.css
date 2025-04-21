@@ -16,7 +16,7 @@
 }
 
 .btn-outline-primary {
-  @apply border-primary bg-transparent hover:bg-primary hover:text-white  rounded-[50px] text-primary font-bold relative transition-all ease-[cubic-bezier(.42,0,.58,1)] duration-75 overflow-hidden h-12;
+  @apply border-primary dark:border-darkmode-primary bg-transparent hover:bg-primary hover:text-white  rounded-[50px] text-primary dark:text-darkmode-primary font-bold relative transition-all ease-[cubic-bezier(.42,0,.58,1)] duration-75 overflow-hidden h-12;
 }
 .btn-outline-primary::before {
   @apply content-[''] absolute  h-full right-0  bg-black/5 w-0 top-0 transition-all duration-500 rounded-[50px];

@@ -42,7 +42,7 @@ const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
       <div class="row">
         <div class="lg:col-8">
           <div
-            class="row rounded border border-border p-4 px-3 dark:border-darkmode-border lg:p-6">
+            class="row rounded border border-border dark:border-darkmode-border py-6">
             {
               filterByCategories.map((post) => (
                 <div class="col-12 mb-8 sm:col-6">
@@ -52,7 +52,7 @@ const filterByCategories: CollectionEntry<"posts">[] = taxonomyFilter(
             }
           </div>
         </div>
-        <Sidebar posts={posts} />
+        <Sidebar posts={posts} className="max-lg:px-0 max-lg:mt-6" />
       </div>
     </div>
   </div>

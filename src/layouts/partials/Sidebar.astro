@@ -34,10 +34,10 @@ const categoriesWithPostsCount = catagories.map((category) => {
 });
 ---
 
-<aside class={`${className} lg:col-4`}>
+<aside class={`${className} lg:col-4 `}>
   {
     about.enable && (
-      <div class="relative rounded border border-border p-6 text-center dark:border-darkmode-border">
+      <div class="relative rounded border border-border lg:p-6 text-center dark:border-darkmode-border">
         <Image
           width={377}
           height={273}
@@ -123,41 +123,6 @@ const categoriesWithPostsCount = catagories.map((category) => {
           </button>
         </div>
 
-        {/* Recent post */}
-        <div class="recent-tab hidden">
-          {posts.slice(0, featured_posts.showPost).map((post, i, arr) => (
-            <div
-              class={`flex items-center ${
-                i !== arr.length - 1 &&
-                "mb-6 border-b border-border pb-6 dark:border-darkmode-border"
-              }`}>
-              {post.data.image && (
-                <Image
-                  class="mr-3 h-[85px] w-[85px] rounded-full object-cover"
-                  src={post.data.image}
-                  alt={post.data.title || ""}
-                  width={105}
-                  height={85}
-                  format="webp"
-                />
-              )}
-              <div>
-                <h3 class="h5 mb-2">
-                  <a
-                    href={`/${post_folder}/${post.id}`}
-                    class="block hover:text-primary">
-                    {post.data.title}
-                  </a>
-                </h3>
-                <p class="inline-flex items-center font-secondary text-xs">
-                  <DynamicIcon className="mr-1.5" icon="FaRegCalendar" />
-                  {dateFormat(post.data.date!)}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Featured  */}
         <div class="featured-tab block">
           {featuredPosts
@@ -182,7 +147,7 @@ const categoriesWithPostsCount = catagories.map((category) => {
                   <h3 class="h5 mb-2">
                     <a
                       href={`/${post_folder}/${post.id}`}
-                      class="block hover:text-primary">
+                      class="block hover:text-primary dark:hover:text-darkmode-primary">
                       {post.data.title}
                     </a>
                   </h3>
