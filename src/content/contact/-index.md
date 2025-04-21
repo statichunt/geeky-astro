@@ -12,9 +12,10 @@ social_links:
     link: tel:+211234565523
   - icon: FaEnvelope
     content: info@email.com
-    link: mailto:info@email.com
+    link: mailto:info@gmail.com
   - icon: FaLocationDot
     content: 9567 Turner Trace Apt. BC C3G8A4
+    link: https://maps.app.goo.gl/GUU64bJCQtiSRxGx9
 
 draft: false
 ---

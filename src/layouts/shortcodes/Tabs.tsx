@@ -46,7 +46,7 @@ const Tabs = ({
           (item: { name: string; children: string }, index: number) => (
             <li
               key={index}
-              className={`tab-nav-item ${index === active && "active"}`}
+              className={`tab-nav-item before:hidden ${index === active && "active"}`}
               role="tab"
               tabIndex={index === active ? 0 : -1}
               onKeyDown={(event) => handleKeyDown(event, index)}

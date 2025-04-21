@@ -18,7 +18,7 @@
   @apply list-none!;
 }
 .tab-nav-item {
-  @apply cursor-pointer border-b-[3px] border-border py-2 text-lg text-text-dark opacity-80 dark:border-text-light;
+  @apply cursor-pointer border-b-[3px] border-border py-2 text-lg text-text-dark dark:text-darkmode-text-light opacity-80 dark:border-text-light;
   @apply my-0!;
   @apply px-8!;
 }
@@ -87,12 +87,22 @@
   @apply prose-table:rounded;
   @apply prose-strong:text-text-dark prose-strong:dark:text-darkmode-text-light;
   @apply prose-a:text-primary prose-a:no-underline prose-a:hover:underline;
-  @apply prose-li:text-text prose-li:dark:text-darkmode-text-light;
   @apply prose-table:overflow-hidden prose-table:border prose-table:border-border prose-table:dark:border-darkmode-border;
   @apply prose-thead:border-border prose-thead:bg-light prose-th:py-4 prose-th:px-4 prose-th:text-text-dark prose-thead:dark:border-darkmode-border prose-thead:dark:bg-dark prose-th:dark:text-darkmode-text-light;
   @apply prose-tr:border-border prose-tr:dark:border-darkmode-border;
   @apply prose-td:px-3 prose-td:py-4 prose-td:dark:text-darkmode-text-light;
-  @apply prose-li:dark:marker:text-darkmode-text-light;
+  @apply prose-li:text-text-dark prose-li:dark:text-darkmode-text-light;
+
+  ul li {
+    @apply relative list-none text-text-dark dark:text-darkmode-text-light;
+  }
+  ul li::before {
+    @apply absolute -ml-[15px] left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary content-[''];
+    box-shadow: 0px 0px 0px 2px var(--color-primary);
+  }
+  ul li {
+    @apply before:border-body dark:before:border-darkmode-body;
+  }
 
   img + em {
     @apply -mt-4 block text-center text-gray-500;
@@ -104,12 +114,10 @@
       &::before {
         @apply absolute inline-block h-5 w-5 bg-[url('/images/quote.png')] bg-[length:20px_20px] bg-no-repeat;
       }
-
       &::before {
         @apply -left-10 top-0 lg:-left-10;
         content: "";
       }
-
       &::after {
         @apply bottom-0 right-0 rotate-180;
         content: "";
@@ -130,7 +138,7 @@
     }
 
     span {
-      @apply font-normal font-bold text-text-dark dark:text-darkmode-text-light lg:text-[55px];
+      @apply text-h2 font-normal font-bold text-text-dark dark:text-darkmode-text-light lg:text-[55px];
     }
   }
 }
@@ -162,11 +170,16 @@ footer .socials {
 
 /* experience */
 .experience {
-  ul {
-    @apply list-inside list-disc;
-    li {
-      @apply marker:text-text/20 dark:marker:text-darkmode-text-light;
-    }
+  li span {
+    @apply relative pl-5!;
+  }
+  li span::before {
+    @apply absolute left-0 top-1/2 -translate-y-1/2 h-[9px] w-[9px] rounded-full border-2 bg-primary content-[''];
+    box-shadow: 0px 0px 0px 2px var(--color-primary);
+  }
+
+  li span {
+    @apply before:border-body dark:before:border-darkmode-body;
   }
 }
 
