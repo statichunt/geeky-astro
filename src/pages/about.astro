@@ -19,8 +19,7 @@ const { title, image, education, experience, description, meta_title } =
           <div class="mb-8">
             <Image
               src={image}
-              width={1298}
-              height={616}
+              width={300}
               alt={title || ""}
               class="rounded-lg"
               format="webp"
@@ -28,11 +27,6 @@ const { title, image, education, experience, description, meta_title } =
           </div>
         )
       }
-
-      <h1
-        class="h1 text-left lg:text-[55px] mt-12"
-        set:html={markdownify(title || "")}
-      />
 
       <div class="content text-left">
         <Content />
